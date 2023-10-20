@@ -1,24 +1,28 @@
 <template>
     <div id="app">
-        <img alt="Vue logo" src="./assets/logo.png">
-        {{ test }}
+        <layout ref="layout">
+            <template v-slot:body>
+                <router-view />
+            </template>
+        </layout>
     </div>
 </template>
 
 <script>
-// import HelloWorld from '@/components/HelloWorld.vue'
+import layout from "@/components/layout.vue";
 
 export default {
     name: 'App',
+    computed: {
+    },
     components: {
-        // HelloWorld
+        layout,
     },
     data() {
         return {
-            test: '123',
         }
     },
-    mounted() {
+    mounted: function() {
         let vm = this;
     }
 }
