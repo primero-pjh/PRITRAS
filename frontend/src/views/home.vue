@@ -1,7 +1,7 @@
 <template>
     <div id="homeVue" style="height: 100%;">
         <div>
-            home
+            {{ host }}
         </div>
     </div>
 </template>
@@ -13,6 +13,11 @@ import axios from "axios";
 export default {
     name: 'homeVue',
     components: {
+    },
+    computed: {
+        host() {
+            return this.$store.state.host;
+        }
     },
     data() {
         return {

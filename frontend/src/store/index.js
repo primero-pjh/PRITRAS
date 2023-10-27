@@ -1,11 +1,21 @@
 import { createStore } from "vuex";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 // state, getters, mutations, actions, modules
 const store = createStore({
     state : {
         appUser: {
+            socket: null,
             UID: '',
+            appUser: {
+                UID: '',
+                userId: '',
+            },
+            isLogged: false,
+            isHeaderShow: true,
+
+            host: '',
         },
         /* useful function */
         getCookie: function (name) {
@@ -56,6 +66,48 @@ const store = createStore({
     getters: {
     },
     mutations: {
+        /* 로그인 시 발생하는 function
+            개인유저의 socket을 설정한다 
+        */
+        initSocket(state) {
+            let host = state.host;
+            try {
+                const socket = io(`${host}`, {
+                    auth: { 
+                        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiJwcmltZXJvIiwidXNlck5hbWUiOiJwcml0cmFzIiwiaWF0IjoxNTE2MjM5MDIyfQ.tjRE_-5gKAFF1Yj-CeMrKu7r3GxAp5sCXuTDTT0kTj4', 
+                    },
+                });
+                state.socket = socket;
+                /* error 반환 */
+                state.socket.on('/client/connection', (data) => {
+                    console.log("data:", data);
+                });
+                state.socket.on('/error', (data) => {
+                    alert(data.message);
+                    window.location.reload();
+                });
+            } catch (err) {
+                // console.log(err);
+                alert(err);
+            }
+        },
+        setHeaderShow(state, data) {
+            state.isHeaderShow = data;
+        },
+
+        setAppUser(state, appUser) {
+            if(appUser) {
+                state.UID = appUser.UID;
+                state.appUser.UID = appUser.UID;
+                state.appUser.userId = appUser.userId;
+                state.isLogged = true;
+            } else {
+                state.UID = "";
+                state.appUser.UID = "";
+                state.appUser.userId = "";
+                state.isLogged = false;
+            }
+        },
     },
 });
 

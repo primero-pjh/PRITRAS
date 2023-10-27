@@ -72,11 +72,24 @@ const $c = {
     let value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
     return value? value[2] : null;
   },
+  response_notify(icon, color, message) {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent);
+    if(isMobile) {
+      alert(message);
+    } else {
+      Notify.create({
+        icon,
+        color,
+        message,
+      });
+    }
+  }
 }
 app.config.globalProperties.$store = store;
 app.config.globalProperties.$c = $c;
 app.config.globalProperties.$config = config;
 app.config.globalProperties.$axios = axios;
+window.$c = $c;
 console.error(`ybr version: ${config.version}`);
 app.use(Quasar, {
   plugins: {
