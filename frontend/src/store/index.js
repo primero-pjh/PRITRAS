@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import axios from "axios";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
+const io = require('socket.io-client');
 
 // state, getters, mutations, actions, modules
 const store = createStore({
@@ -72,14 +73,15 @@ const store = createStore({
         initSocket(state) {
             let host = state.host;
             try {
-                const socket = io(`${host}`, {
-                    auth: { 
-                        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiJwcmltZXJvIiwidXNlck5hbWUiOiJwcml0cmFzIiwiaWF0IjoxNTE2MjM5MDIyfQ.tjRE_-5gKAFF1Yj-CeMrKu7r3GxAp5sCXuTDTT0kTj4', 
-                    },
-                });
+                const socket = io("https://localhost:3000");
+                console.log("socket:", socket);
                 state.socket = socket;
                 /* error 반환 */
+                socket.emit("notice", "message");
                 state.socket.on('/client/connection', (data) => {
+                    console.log("data:", data);
+                });
+                state.socket.on('reply', (data) => {
                     console.log("data:", data);
                 });
                 state.socket.on('/error', (data) => {
@@ -87,7 +89,7 @@ const store = createStore({
                     window.location.reload();
                 });
             } catch (err) {
-                // console.log(err);
+                console.log(err);
                 alert(err);
             }
         },
