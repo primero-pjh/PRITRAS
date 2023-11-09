@@ -91,6 +91,7 @@ app.config.globalProperties.$config = config;
 app.config.globalProperties.$axios = axios;
 window.$c = $c;
 console.error(`ybr version: ${config.version}`);
+app.use(store);
 app.use(Quasar, {
   plugins: {
     Loading, Notify, Dialog
@@ -100,5 +101,4 @@ app.use(Quasar, {
   }
 });
 app.use(router);
-app.use(store);
 app.mount('#app');

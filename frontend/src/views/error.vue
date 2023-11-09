@@ -26,7 +26,10 @@ export default {
     methods: {
     },
     mounted() {
-        console.log('error');
+        let vm = this;
+        vm.$store.commit("setHeaderShow", false);
+        vm.$store.commit("setDrawerLeft", false);
+        console.log("mounted");
     }
 }
 </script>

@@ -98,6 +98,18 @@
   font-family: "KakaoRegular";
   src: url("/public/fonts/kakao_fonts/KakaoRegular.ttf") format("truetype");
 }
+@font-face {
+  font-family: "AppleSDGothicNeoB";
+  src: url("/public/fonts/apple_fonts/AppleSDGothicNeoB.ttf") format("truetype");
+}
+@font-face {
+  font-family: "AppleSDGothicNeoEB";
+  src: url("/public/fonts/apple_fonts/AppleSDGothicNeoEB.ttf") format("truetype");
+}
+@font-face {
+  font-family: "AppleSDGothicNeoSB";
+  src: url("/public/fonts/apple_fonts/AppleSDGothicNeoSB.ttf") format("truetype");
+}
 
 .fkB {
   font-family: KakaoBold;
@@ -106,7 +118,19 @@
   font-family: KakaoRegular;
 }
 
+.faB {
+  font-family: AppleSDGothicNeoB;
+}
+.faEB {
+  font-family: AppleSDGothicNeoEB;
+}
+.faSB {
+  font-family: AppleSDGothicNeoSB;
+}
 
+* {
+  font-family: AppleSDGothicNeoB !important;
+}
 
 #app {
   height: 100%;

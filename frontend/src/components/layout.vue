@@ -7,18 +7,17 @@
             class="shadow-2 rounded-borders">
             <q-header reveal class="bg-grey" v-if="isHeaderShow">
                 <q-toolbar>
-                    <q-btn flat @click="drawerLeft = !drawerLeft" round dense icon="dashboard" />
-                    <q-toolbar-title class="fkB" style="cursor: pointer;" @click="goto_home">
+                    <q-btn flat @click="toggleDrawerLeft" round dense icon="dashboard" />
+                    <q-toolbar-title class="fkB">
                         PRITRAS
                     </q-toolbar-title>
                     <template v-if="$store.state.isLogged">
-                        <q-btn outline @click="drawerRight = !drawerRight" 
-                            round dense icon="person">
-                            <q-tooltip>계정</q-tooltip>
-                        </q-btn>
+                        <q-btn flat icon="notifications" />
+                        <q-img src="https://cdn.quasar.dev/img/boy-avatar.png" @click="toggleDrawerRight" 
+                            style="width: 40px; border-radius: 15px; cursor: pointer;" fit="cover" />
                     </template>
                     <template v-else>
-                        <q-btn class="fkB ft16" label="로그인" flat @click="goto_login" />
+                        <q-btn class="fkB ft16" outline label="로그인" @click="goto_login" />
                     </template>
                 </q-toolbar>
             </q-header>
@@ -29,14 +28,24 @@
                 </q-toolbar>
             </q-footer> -->
 
-            <q-drawer v-model="drawerLeft"
-                :width="248" :breakpoint="700" bordered>
-                <q-scroll-area class="fit q-pa-md">
-                    <q-list>
+            <q-drawer v-model="drawerLeft" :width="248" :breakpoint="700" bordered>
+                <q-scroll-area class="fit ">
+                    <div style="display: flex;">
+                        <div></div>
+                        <q-space></q-space>
+                        <q-btn icon="close" flat @click="toggleDrawerLeft"></q-btn>
+                    </div>
+                    <q-separator />
+                    <q-list class="q-px-md">
                         <q-item-label class="fkB ft12 q-pt-md q-px-sm text-grey-7">QUICK MENU</q-item-label>
                         <q-item clickable v-ripple @click="goto_home">
-                            <q-item-section class="fkR ft16">
+                            <q-item-section class="faSB ft16">
                                 <q-item-label>홈화면</q-item-label>
+                            </q-item-section>
+                        </q-item>
+                        <q-item clickable v-ripple @click="goto_calendar" v-if="$store.state.isLogged">
+                            <q-item-section class="faSB ft16">
+                                <q-item-label>캘린더</q-item-label>
                             </q-item-section>
                         </q-item>
                         
@@ -46,7 +55,7 @@
                             <q-item clickable v-ripple>
                                 <q-item-section side>
                                     <q-avatar rounded size="30px" style="display: flex;">
-                                        <img src="https://cdn.quasar.dev/img/boy-avatar.png" style="border-radius: 15px;" />
+                                        <q-img src="https://cdn.quasar.dev/img/boy-avatar.png" style="border-radius: 15px;" />
                                         <q-badge floating rounded color="negative"></q-badge>
                                     </q-avatar>
                                 </q-item-section>
@@ -75,32 +84,34 @@
                 bordered :width="320" :breakpoint="700">
                 <q-scroll-area class="fit">
                     <div>
-                        <div>
-                            <p>계정</p>
+                        <div style="display: flex; align-items: center;" class="q-pa-sm">
+                            <div class="faH ft20">Account</div>
+                            <q-space></q-space>
+                            <q-btn flat icon="close" round v-close-popup @click="toggleDrawerRight" />
                         </div>
                         <q-separator></q-separator>
                         <div>
                             <q-list bordered>
-                                <q-item-label class="fkB ft16 q-pa-md">CONFLUENCE</q-item-label>
+                                <q-item-label class="faH ft16 q-pa-md">CONFLUENCE</q-item-label>
                                 <q-item clickable v-ripple @click="onLogout">
                                     <q-item-section>
-                                        <q-item-label>프로파일</q-item-label>
+                                        <q-item-label class="faB">프로파일</q-item-label>
                                     </q-item-section>
                                 </q-item>
                                 <q-item clickable v-ripple @click="onLogout">
                                     <q-item-section>
-                                        <q-item-label>작업</q-item-label>
+                                        <q-item-label class="faB">작업</q-item-label>
                                     </q-item-section>
                                 </q-item>
                                 <q-item clickable v-ripple @click="onLogout">
                                     <q-item-section>
-                                        <q-item-label>환경설정</q-item-label>
+                                        <q-item-label class="faB">환경설정</q-item-label>
                                     </q-item-section>
                                 </q-item>
                                 <q-separator></q-separator>
                                 <q-item clickable v-ripple @click="onLogout">
                                     <q-item-section>
-                                        <q-item-label>로그아웃</q-item-label>
+                                        <q-item-label class="faB">로그아웃</q-item-label>
                                     </q-item-section>
                                 </q-item>
                             </q-list>
@@ -121,7 +132,7 @@
                 </q-page-scroller>
             </q-page-container>
         </q-layout>
-            
+        
     </div>
 </template>
 
@@ -130,19 +141,36 @@ export default {
     name: 'layoutVue',
     data() {
         return {
-            drawerLeft: true,
-            drawerRight: false,
+            
         }
     },
     props: {
     },
     computed: {
+        drawerLeft() { return this.$store.state.drawerLeft; },
+        drawerRight() { return this.$store.state.drawerRight; },
         isHeaderShow() { return this.$store.state.isHeaderShow; }
     },
     methods: {
+        toggleDrawerLeft() {
+            this.$store.commit("toggleDrawerLeft");
+        },
+        toggleDrawerRight() {
+            this.$store.commit("toggleDrawerRight");
+        },
         goto_home() {
             let vm = this;
             vm.$router.push('/');
+            if(vm.$store.state.isMobile) { 
+                vm.$store.commit("setDrawerLeft", false); 
+            }
+        },
+        goto_calendar() {
+            let vm = this;
+            vm.$router.push('/calendar');
+            if(vm.$store.state.isMobile) { 
+                vm.$store.commit("setDrawerLeft", false); 
+            }
         },
         goto_login() {
             let vm = this;

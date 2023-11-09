@@ -1,7 +1,7 @@
 <template>
     <div id="homeVue" style="height: 100%;">
         <div>
-            {{ host }}
+            홈화면
         </div>
     </div>
 </template>

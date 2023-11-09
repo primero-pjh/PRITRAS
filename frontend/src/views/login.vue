@@ -16,16 +16,16 @@
             class="bg-white">
             <div style="padding: 55px 69px;">
                 <q-input v-model="appUser.userId" label="아이디, 이메일, 전화번호" 
-                    clearable class="fkR ft18"
+                    clearable class="faSB ft18"
                     hint="카카오 계정이 있다면 하단의 카카오 로그인으로 시도해보세요." />
                 <q-input v-model="appUser.password" label="비밀번호" 
-                    type="password" clearable class="fkR ft18" 
+                    type="password" clearable class="faSB ft18" 
                     :error="formError.appUser?true:false" :error-message="formError.appUser" />
                 
                 <q-checkbox v-model="appUser.isRemember" label="자동 로그인" 
                     style="margin: 0 -8px;"
                     class="fkR q-pa-none text-grey-7">
-                    <q-tooltip>
+                    <q-tooltip class="faSB">
                         자동 로그인 시 로그인 세션은 30일간 유효합니다.
                     </q-tooltip>
                 </q-checkbox>
@@ -41,12 +41,12 @@
                 </div>
                 
                 <div id="footer" style="display: flex; align-items: center;" class="q-mt-md text-grey-7">
-                    <span>회원가입</span>
+                    <span class="faSB">회원가입</span>
                     <q-space></q-space>
                     <div style="display: flex; align-items: center;">
-                        <span>계정 찾기</span>
+                        <span class="faSB">계정 찾기</span>
                         <q-separator vertical class="q-mx-sm"></q-separator>
-                        <span>비밀번호 찾기</span>
+                        <span class="faSB">비밀번호 찾기</span>
                     </div>
                 </div>
             </div>

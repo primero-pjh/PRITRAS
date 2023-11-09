@@ -6,18 +6,18 @@ const io = require('socket.io-client');
 // state, getters, mutations, actions, modules
 const store = createStore({
     state : {
+        socket: null,
+        UID: '',
         appUser: {
-            socket: null,
             UID: '',
-            appUser: {
-                UID: '',
-                userId: '',
-            },
-            isLogged: false,
-            isHeaderShow: true,
-
-            host: '',
+            userId: '',
         },
+        isLogged: false,
+        host: '',
+        isHeaderShow: true,
+        isMobile: /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent),
+        drawerLeft: true,
+        drawerRight: false,
         /* useful function */
         getCookie: function (name) {
             let value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
@@ -92,6 +92,16 @@ const store = createStore({
                 console.log(err);
                 alert(err);
             }
+        },
+        toggleDrawerLeft(state) {
+            state.drawerLeft = !state.drawerLeft;
+        },
+        toggleDrawerRight(state) {
+            state.drawerRight = !state.drawerRight;
+        },
+        setDrawerLeft(state, data) {
+            state.drawerLeft = data;
+            console.log(data);
         },
         setHeaderShow(state, data) {
             state.isHeaderShow = data;

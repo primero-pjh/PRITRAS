@@ -49,7 +49,7 @@ func main() {
 		return nil
 	})
 	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
-		log.Println("notice:", msg)
+		fmt.Println("notice:", msg)
 		s.Emit("reply", "have "+msg)
 	})
 	server.OnError("/", func(s socketio.Conn, e error) {
@@ -61,14 +61,21 @@ func main() {
 		// server.Remove(s.ID())
 		fmt.Println("closed", reason)
 	})
-	// go server.Serve()
+	
+	go func() {
+		if err := server.Serve(); err != nil {
+			log.Fatalf("socketio listen error: %s\n", err)
+		}
+	}()
 	defer server.Close()
+
 	// router.Use(cors.New(
 	// 	cors.Config{
 	// 		AllowOrigins: []string{"https://localhost:8080"},
 	// 		MaxAge: 12 * time.Hour,
 	// }))
-	router.Use(GinMiddleware("https://localhost:8080"))
+	// router.Use(GinMiddleware("https://localhost:8080"))
+	router.Use(GinMiddleware("http://localhost:8080"))
 	
 	router.GET("/socket.io/", gin.WrapH(server))
 	router.POST("/socket.io/", func(context *gin.Context) {
