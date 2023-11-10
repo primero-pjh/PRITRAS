@@ -12,7 +12,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
+	"github.com/primero-pjh/PRITRAS/backend/models"
 )
+
 
 var (
 	//go:embed web/public/*.html
@@ -80,6 +82,17 @@ func main() {
 	router.GET("/socket.io/", gin.WrapH(server))
 	router.POST("/socket.io/", func(context *gin.Context) {
 		server.ServeHTTP(context.Writer, context.Request)
+	})
+	router.GET("/api/users/company/:companyCode", func(c *gin.Context) {
+		companyCode := c.Param("companyCode")
+
+		users := models.appUsers.get(companyCode)
+		fmt.Println(users)
+
+		c.JSON(http.StatusOK, gin.H {
+			"success": 1,
+			"companyCode": companyCode,
+		});
 	})
 	router.SetFuncMap(template.FuncMap{})
 	LoadHTMLFromEmbedFS(router, templatesFS, "web/public/*")

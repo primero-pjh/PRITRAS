@@ -51,18 +51,27 @@
                         
                         <template v-if="$store.state.isLogged">
                             <q-separator></q-separator>
-                            <q-item-label class="fkB ft12 q-pt-md q-px-sm text-grey-7">1:1</q-item-label>
-                            <q-item clickable v-ripple>
-                                <q-item-section side>
-                                    <q-avatar rounded size="30px" style="display: flex;">
-                                        <q-img src="https://cdn.quasar.dev/img/boy-avatar.png" style="border-radius: 15px;" />
-                                        <q-badge floating rounded color="negative"></q-badge>
-                                    </q-avatar>
-                                </q-item-section>
-                                <q-item-section class="fkR ft16">
-                                    <q-item-label>박재현</q-item-label>
-                                </q-item-section>
-                            </q-item>
+                            <q-item-label class="fkB ft12 q-pt-md q-px-sm text-grey-7"
+                                style="cursor: pointer;" @click="expandP2P=!expandP2P">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>1:1</div>
+                                    <div v-if="expandP2P"><q-icon name="expand_less" /></div>
+                                    <div v-else><q-icon name="expand_more" /></div>
+                                </div>
+                            </q-item-label>
+                            <template v-if="expandP2P">
+                                <q-item clickable v-ripple>
+                                    <q-item-section side>
+                                        <q-avatar rounded size="30px" style="display: flex;">
+                                            <q-img src="https://cdn.quasar.dev/img/boy-avatar.png" style="border-radius: 15px;" />
+                                            <q-badge floating rounded color="negative"></q-badge>
+                                        </q-avatar>
+                                    </q-item-section>
+                                    <q-item-section class="fkR ft16">
+                                        <q-item-label>박재현</q-item-label>
+                                    </q-item-section>
+                                </q-item>
+                            </template>
                             <q-separator></q-separator>
                             <q-item-label class="fkB ft12 q-pt-md q-px-sm text-grey-7">채팅방</q-item-label>
                             <q-item clickable v-ripple>
@@ -141,7 +150,7 @@ export default {
     name: 'layoutVue',
     data() {
         return {
-            
+            expandP2P: true,
         }
     },
     props: {

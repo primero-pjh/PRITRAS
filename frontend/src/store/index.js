@@ -18,6 +18,8 @@ const store = createStore({
         isMobile: /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent),
         drawerLeft: true,
         drawerRight: false,
+        user_list: [],
+
         /* useful function */
         getCookie: function (name) {
             let value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
@@ -119,6 +121,17 @@ const store = createStore({
                 state.appUser.userId = "";
                 state.isLogged = false;
             }
+        },
+
+        onLoadUsers(state, companyCode) {
+            axios.get(`/api/users/company/${companyCode}`, {
+
+            }).then((res) => {
+                let data = res.data;
+                console.log("data:", data);
+            }).catch((err) => {
+                console.log('err:', err);
+            });
         },
     },
 });

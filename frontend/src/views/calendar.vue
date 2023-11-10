@@ -20,13 +20,13 @@
             </div>
             <div style="display: flex;">
                 <div class="q-mr-md">
-                    <q-btn dense icon="chevron_left" outline @click="move_date(-1)"></q-btn>
+                    <q-btn dense icon="chevron_left" outline @click="move_date(-1)" />
                 </div>
                 <div class="q-mr-md">
                     <div class="faB ft24 q-px-md">{{ standard_date }}</div>
                 </div>
                 <div class="q-mr-md">
-                    <q-btn dense icon="chevron_right" outline @click="move_date(1)"></q-btn>
+                    <q-btn dense icon="chevron_right" outline @click="move_date(1)" />
                 </div>
                 <div>
                     <q-btn dense label="오늘" outline color="primary" class="fkR" 

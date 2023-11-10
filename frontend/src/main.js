@@ -98,7 +98,7 @@ app.use(Quasar, {
   },
   config: {
     loading: { /* look at QuasarConfOptions from the API card */ }
-  }
+  },
 });
 app.use(router);
 app.mount('#app');

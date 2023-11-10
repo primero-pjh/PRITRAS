@@ -82,6 +82,7 @@ export default {
                 userName: 'PRITRAS',
             });
             vm.$store.commit("initSocket");
+            vm.$store.commit("onLoadUsers");
             vm.$router.push("/");
         },
     },
