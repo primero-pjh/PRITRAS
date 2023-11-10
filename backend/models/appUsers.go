@@ -32,7 +32,7 @@ func (u appUser) get(string companyCode) (user appUser, err error) {
 	return
 }
 
-func main() {
+func init() {
 	var err error
 	fmt.Println("model- execute appUsers!")
 	db, err = sql.Open("mysql", "root:Raffine9847!@tcp(pritras.vps.phps.kr:3306)/PRITRAS?parseTime=true")

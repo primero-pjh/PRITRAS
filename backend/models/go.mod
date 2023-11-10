@@ -1,11 +1,3 @@
-module models
+module github.com/dev-yakuza/study-golang/module/models
 
 go 1.21.3
-
-require (
-    calc v0.0.0
-)
-
-replace (
-    calc v0.0.0 => ./backend/models
-)

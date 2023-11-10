@@ -12,9 +12,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
-	"github.com/primero-pjh/PRITRAS/backend/models"
+	// "github.com/dev-yakuza/study-golang/module/models"
 )
-
 
 var (
 	//go:embed web/public/*.html
