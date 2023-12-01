@@ -9,7 +9,6 @@ import (
 	"log"
 	// "time"
 	// "github.com/gin-contrib/cors"
-
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
 	// "github.com/dev-yakuza/study-golang/module/models"
@@ -82,17 +81,10 @@ func main() {
 	router.POST("/socket.io/", func(context *gin.Context) {
 		server.ServeHTTP(context.Writer, context.Request)
 	})
-	router.GET("/api/users/company/:companyCode", func(c *gin.Context) {
-		companyCode := c.Param("companyCode")
+	
+	// router.GET("/api/users/company/:companyCode", routers.ApiUserCompany)
 
-		users := models.appUsers.get(companyCode)
-		fmt.Println(users)
 
-		c.JSON(http.StatusOK, gin.H {
-			"success": 1,
-			"companyCode": companyCode,
-		});
-	})
 	router.SetFuncMap(template.FuncMap{})
 	LoadHTMLFromEmbedFS(router, templatesFS, "web/public/*")
 	

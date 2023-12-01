@@ -128,9 +128,11 @@ const store = createStore({
 
             }).then((res) => {
                 let data = res.data;
-                console.log("data:", data);
+                if(data.success) {
+                    console.log(data.users);
+                }
             }).catch((err) => {
-                console.log('err:', err);
+                console.error('err:', err);
             });
         },
     },

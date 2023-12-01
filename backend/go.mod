@@ -5,6 +5,7 @@ go 1.21.3
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/googollee/go-socket.io v1.7.0
+	pritras.com/entities v0.0.0
 )
 
 require (
@@ -16,6 +17,7 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.15.5 // indirect
+	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/gomodule/redigo v1.8.4 // indirect
@@ -39,4 +41,9 @@ require (
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
+
+replace (
+	pritras.com/database v0.0.0 => ./database
+	pritras.com/entities v0.0.0 => ./entities
 )
