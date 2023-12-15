@@ -72,7 +72,7 @@
                                     </q-item-section>
                                 </q-item>
                             </template>
-                            <q-separator></q-separator>
+                            <!--<q-separator></q-separator>
                             <q-item-label class="fkB ft12 q-pt-md q-px-sm text-grey-7">채팅방</q-item-label>
                             <q-item clickable v-ripple>
                                 <q-item-section class="fkR ft16">
@@ -83,7 +83,7 @@
                                 <q-item-section class="fkR ft16">
                                     <q-item-label>경영지원본부</q-item-label>
                                 </q-item-section>
-                            </q-item>
+                            </q-item>-->
                         </template>
                     </q-list>
                 </q-scroll-area>

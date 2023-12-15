@@ -27,6 +27,12 @@ export default {
     },
     mounted() {
         let vm = this;
+        axios.get(`/api/user/company/1`, {}).then((res) => {
+            let data = res.data;
+            console.log("data:", data);
+        }).catch((err) => {
+            console.log(err);
+        });
     },
 }
 </script>
