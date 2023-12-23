@@ -1,7 +1,7 @@
 <template>
-    <div id="homeVue" style="height: 100%;">
+    <div id="okrVue" style="height: 100%;">
         <div>
-            공지사항(중요사항) 을 알려주는 UI/UX
+            오케알 인데요?
         </div>
     </div>
 </template>
@@ -11,7 +11,7 @@
 import axios from "axios";
 
 export default {
-    name: 'homeVue',
+    name: 'okrVue',
     components: {
     },
     computed: {

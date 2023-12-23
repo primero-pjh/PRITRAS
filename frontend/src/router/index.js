@@ -3,6 +3,8 @@ import homeVue from "@/views/home.vue";
 import loginVue from "@/views/login.vue";
 import calendarVue from "@/views/calendar.vue";
 import errorVue from "@/views/error.vue";
+import okrVue from "@/views/okr.vue";
+import workSpaceSettingVue from "@/views/workSpace/settings.vue";
 
 const routes = [
     /* default-user */
@@ -12,6 +14,10 @@ const routes = [
         meta: { title: '로그인', hasLogged: false } },
     { path: "/calendar", name: "calendar", component: calendarVue,
         meta: { title: '캘린더', hasLogged: true } },
+    { path: "/okr", name: "okr", component: okrVue,
+        meta: { title: 'OKR', hasLogged: true } },
+    { path: "/workSpace/:WorkSpaceId", name: "workSpace", component: workSpaceSettingVue,
+        meta: { title: '워크스페이스', hasLogged: true } },
 
     /*error*/
     { path: "/error", name: "error", component: errorVue, label: "404", },

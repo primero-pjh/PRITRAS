@@ -7,7 +7,7 @@ import (
 
 func Get(c *gin.Context) {
 	fmt.Println("/api/users/company/:companyCode")
-	c.JSON(402, gin.H{
+	c.JSON(200, gin.H{
 		"message": "pong",
 	})
 }

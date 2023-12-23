@@ -15,6 +15,7 @@ import (
 
 	// "PRITRAS/controllers/appUsers"
 	"PRITRAS/controllers/user"
+	"PRITRAS/controllers/user/company/workspaces"
 )
 
 var (
@@ -73,12 +74,12 @@ func main() {
 	defer server.Close()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"https://localhost:8080", "http://localhost:8080"},
+		AllowOrigins: 	  []string{"https://localhost:8080", "http://localhost:8080"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		MaxAge: 12 * time.Hour,
+		MaxAge: 		  12 * time.Hour,
 	}))
 	// router.Use(GinMiddleware("https://localhost:8080"))
 	// router.Use(GinMiddleware("http://localhost:8080"))
@@ -91,6 +92,7 @@ func main() {
 	v1Api := router.Group("/api/user") 
 	{
 		v1Api.GET("/company/:companyCode", user.Get)
+		v1Api.GET("/company/:companyCode/workSpaces", workspaces.GetWorkSpaces)
 	}
 
 
@@ -114,7 +116,8 @@ func main() {
 	// router.Static("/public", "../template/css")
     // router.Static("/static", "./web/templates")
 	router.StaticFile("/favicon.ico", "./web/public/favicon.ico")
-	router.RunTLS(":3000", "./configs/localhost-cert.pem", "./configs/localhost-private.pem")
+	router.Run(":3000");
+	// router.RunTLS(":3000", "./configs/localhost-cert.pem", "./configs/localhost-private.pem")
 }
 
 func LoadHTMLFromEmbedFS(engine *gin.Engine, em embed.FS, pattern string) {

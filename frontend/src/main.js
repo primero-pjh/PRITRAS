@@ -9,28 +9,28 @@ import 'quasar/dist/quasar.css'
 import axios from 'axios';
 import '@/assets/css/common.css';
 
-axios.interceptors.request.use((config) => {
-  let token = $c.getCookie('token');  // Browser-Cookie에 저장된 token을 가져온다.
-  config.headers["Authorization"] = token;
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-axios.interceptors.response.use((res) => {
-  let data = res.data;
-  if(data.success == 0 && Object.prototype.hasOwnProperty.call(data, "isLogged")) { // Jwt 토큰 검증에 실패한 경우 에러코드 출력 후 Login 페이지로 이동
-    alert(data.message);
-    window.location = "/#/login";
-  } else if (data.success == 0 && Object.prototype.hasOwnProperty.call(data, "code")) { // couple의 정보가 잘못된 경우 에러코드 출력 후 Login 페이지로 이동
-    if(data.code == "COUPLE_EMPTY_ERROR") {
-      alert(data.message);
-      window.location = "/#/login";
-    }
-  }
-  return res;
-}, (error) => {
-  return Promise.reject(error);
-});
+// axios.interceptors.request.use((config) => {
+//   let token = $c.getCookie('token');  // Browser-Cookie에 저장된 token을 가져온다.
+//   config.headers["Authorization"] = token;
+//   return config;
+// }, (error) => {
+//   return Promise.reject(error);
+// });
+// axios.interceptors.response.use((res) => {
+//   let data = res.data;
+//   if(data.success == 0 && Object.prototype.hasOwnProperty.call(data, "isLogged")) { // Jwt 토큰 검증에 실패한 경우 에러코드 출력 후 Login 페이지로 이동
+//     alert(data.message);
+//     window.location = "/#/login";
+//   } else if (data.success == 0 && Object.prototype.hasOwnProperty.call(data, "code")) { // couple의 정보가 잘못된 경우 에러코드 출력 후 Login 페이지로 이동
+//     if(data.code == "COUPLE_EMPTY_ERROR") {
+//       alert(data.message);
+//       window.location = "/#/login";
+//     }
+//   }
+//   return res;
+// }, (error) => {
+//   return Promise.reject(error);
+// });
 const app = createApp(App);
 const $c = {
   formatDate: function(date, type, format) {

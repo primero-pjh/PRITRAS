@@ -20,6 +20,8 @@ const store = createStore({
         drawerRight: false,
         user_list: [],
 
+        workSpaces: [],
+
         /* useful function */
         getCookie: function (name) {
             let value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
@@ -75,8 +77,7 @@ const store = createStore({
         initSocket(state) {
             let host = state.host;
             try {
-                const socket = io("https://localhost:3000");
-                console.log("socket:", socket);
+                const socket = io("http://localhost:3000");
                 state.socket = socket;
                 /* error 반환 */
                 socket.emit("notice", "message");
@@ -103,7 +104,6 @@ const store = createStore({
         },
         setDrawerLeft(state, data) {
             state.drawerLeft = data;
-            console.log(data);
         },
         setHeaderShow(state, data) {
             state.isHeaderShow = data;
@@ -135,6 +135,19 @@ const store = createStore({
                 console.error('err:', err);
             });
         },
+        onLoadWorkSpaces(state, companyCode) {
+            axios.get(`/api/user/company/${companyCode}/workSpaces`, {
+                
+            }).then((res) => {
+                let data = res.data;
+                if(data.success) {
+                    let row = data.workSpaces;
+                    state.workSpaces = row;
+                }
+            }).catch((err) => {
+                console.error('err:', err);
+            });
+        }
     },
 });
 

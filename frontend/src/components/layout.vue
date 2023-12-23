@@ -48,8 +48,31 @@
                                 <q-item-label>캘린더</q-item-label>
                             </q-item-section>
                         </q-item>
+                        <q-item clickable v-ripple @click="goto_okr" v-if="$store.state.isLogged">
+                            <q-item-section class="faSB ft16">
+                                <q-item-label>OKR</q-item-label>
+                            </q-item-section>
+                        </q-item>
                         
                         <template v-if="$store.state.isLogged">
+                            <q-separator></q-separator>
+                            <q-item-label class="fkB ft12 q-pt-md q-px-sm text-grey-7">
+                                <div style="display: flex; align-items: center;">
+                                    <div>워크스페이스</div>
+                                    <q-space />
+                                    <div>
+                                        <q-btn icon="add" flat dense size="sm"
+                                            @click="goto_workSpace(0)" />
+                                    </div>
+                                </div>
+                            </q-item-label>
+                            <template v-for="ws, ws_i in workSpaces" :key="ws_i">
+                                <q-item clickable v-ripple @click="goto_workSpace(ws.WorkSpaceId)">
+                                    <q-item-section class="faSB ft16">
+                                        <q-item-label>{{ ws.WorkSpaceName }}</q-item-label>
+                                    </q-item-section>
+                                </q-item>
+                            </template>
                             <q-separator></q-separator>
                             <q-item-label class="fkB ft12 q-pt-md q-px-sm text-grey-7"
                                 style="cursor: pointer;" @click="expandP2P=!expandP2P">
@@ -72,18 +95,7 @@
                                     </q-item-section>
                                 </q-item>
                             </template>
-                            <!--<q-separator></q-separator>
-                            <q-item-label class="fkB ft12 q-pt-md q-px-sm text-grey-7">채팅방</q-item-label>
-                            <q-item clickable v-ripple>
-                                <q-item-section class="fkR ft16">
-                                    <q-item-label>IT개발실</q-item-label>
-                                </q-item-section>
-                            </q-item>
-                            <q-item clickable v-ripple>
-                                <q-item-section class="fkR ft16">
-                                    <q-item-label>경영지원본부</q-item-label>
-                                </q-item-section>
-                            </q-item>-->
+                            
                         </template>
                     </q-list>
                 </q-scroll-area>
@@ -158,7 +170,11 @@ export default {
     computed: {
         drawerLeft() { return this.$store.state.drawerLeft; },
         drawerRight() { return this.$store.state.drawerRight; },
-        isHeaderShow() { return this.$store.state.isHeaderShow; }
+        isHeaderShow() { return this.$store.state.isHeaderShow; },
+
+        workSpaces() {
+            return this.$store.state.workSpaces;
+        }
     },
     methods: {
         toggleDrawerLeft() {
@@ -181,9 +197,18 @@ export default {
                 vm.$store.commit("setDrawerLeft", false); 
             }
         },
+        goto_okr() {
+            let vm = this;
+            vm.$router.push("/okr");
+        },
         goto_login() {
             let vm = this;
             vm.$router.push('login');
+        },
+        goto_workSpace(WorkSpaceId) {
+            let vm = this;
+            vm.$router.push(`/workSpace/${WorkSpaceId}`);
+            // console.log("ws:", ws);
         },
 
         onLogout() {
