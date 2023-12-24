@@ -26,11 +26,11 @@ export default {
         let vm = this;
         vm.$store.state.host = process.env.VUE_APP_HOST;
         vm.$router.beforeEach((to, from, next) => {
-            console.log(to, from);
+            // console.log(to, from);
             document.title = `PRITRAS - ${to.meta.title}`;
             if(to.meta.hasLogged) {
                 if(vm.$store.state.isLogged == false) {
-                    vm.$router.push('/error');
+                    vm.$router.push('/');
                     return;
                 }
             }

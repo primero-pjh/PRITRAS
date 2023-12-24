@@ -18,8 +18,8 @@ const store = createStore({
         isMobile: /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent),
         drawerLeft: true,
         drawerRight: false,
-        user_list: [],
-
+        
+        appUsers: [],
         workSpaces: [],
 
         /* useful function */
@@ -124,19 +124,21 @@ const store = createStore({
         },
 
         onLoadUsers(state, companyCode) {
-            axios.get(`/api/users/company/${companyCode}`, {
+            axios.get(`/api/user/company/${companyCode}`, {
 
             }).then((res) => {
                 let data = res.data;
                 if(data.success) {
-                    console.log(data.users);
+                    let row = data.appUsers;
+                    state.appUsers = row;
                 }
             }).catch((err) => {
                 console.error('err:', err);
             });
         },
-        onLoadWorkSpaces(state, companyCode) {
-            axios.get(`/api/user/company/${companyCode}/workSpaces`, {
+        onLoadUserOfWorkSpaces(state) {
+            const UID = state.UID;
+            axios.get(`/api/user/${UID}/workSpaces`, {
                 
             }).then((res) => {
                 let data = res.data;

@@ -45,12 +45,12 @@
                         </q-item>
                         <q-item clickable v-ripple @click="goto_calendar" v-if="$store.state.isLogged">
                             <q-item-section class="faSB ft16">
-                                <q-item-label>캘린더</q-item-label>
+                                <q-item-label>개별 캘린더</q-item-label>
                             </q-item-section>
                         </q-item>
                         <q-item clickable v-ripple @click="goto_okr" v-if="$store.state.isLogged">
                             <q-item-section class="faSB ft16">
-                                <q-item-label>OKR</q-item-label>
+                                <q-item-label>개별 OKR</q-item-label>
                             </q-item-section>
                         </q-item>
                         
@@ -62,7 +62,7 @@
                                     <q-space />
                                     <div>
                                         <q-btn icon="add" flat dense size="sm"
-                                            @click="goto_workSpace(0)" />
+                                            @click="$router.push('/workSpace/setting/0')" />
                                     </div>
                                 </div>
                             </q-item-label>
@@ -208,7 +208,6 @@ export default {
         goto_workSpace(WorkSpaceId) {
             let vm = this;
             vm.$router.push(`/workSpace/${WorkSpaceId}`);
-            // console.log("ws:", ws);
         },
 
         onLogout() {
@@ -219,6 +218,7 @@ export default {
     },
     mounted() {
         let vm = this;
+        console.log(vm.$route.fullPath.split("/"))
     }
 }
 </script>

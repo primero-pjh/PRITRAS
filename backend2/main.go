@@ -14,8 +14,9 @@ import (
 	// "github.com/dev-yakuza/study-golang/module/models"
 
 	// "PRITRAS/controllers/appUsers"
-	"PRITRAS/controllers/user"
-	"PRITRAS/controllers/user/company/workspaces"
+	user "PRITRAS/controllers/user/company"
+	workSpace "PRITRAS/controllers/workSpace"
+	user_workSpace "PRITRAS/controllers/user/workSpace"
 )
 
 var (
@@ -91,8 +92,14 @@ func main() {
 	
 	v1Api := router.Group("/api/user") 
 	{
-		v1Api.GET("/company/:companyCode", user.Get)
-		v1Api.GET("/company/:companyCode/workSpaces", workspaces.GetWorkSpaces)
+		v1Api.GET("/company/:companyCode", user.GetUsers)
+		// v1Api.GET("/company/:companyCode/workSpaces", user_workSpaces.GetWorkSpaces)
+		v1Api.GET("/:UID/workSpaces", user_workSpace.GetUserOfWorkSpaceController)
+	}
+	v2Api := router.Group("/api/workSpace") 
+	{
+		v2Api.POST("/", workSpace.InsertWorkSpace)
+		// v1Api.GET("/company/:companyCode/workSpaces", user.GetWorkSpaces)
 	}
 
 
@@ -111,6 +118,9 @@ func main() {
 		context.FileFromFS(path.Join("/web/public", context.Request.URL.Path), http.FS(staticFS))
 	})
 	router.GET("/fonts/*filepath", func(context *gin.Context) {
+		context.FileFromFS(path.Join("/web/public", context.Request.URL.Path), http.FS(staticFS))
+	})
+	router.GET("/images/*filepath", func(context *gin.Context) {
 		context.FileFromFS(path.Join("/web/public", context.Request.URL.Path), http.FS(staticFS))
 	})
 	// router.Static("/public", "../template/css")

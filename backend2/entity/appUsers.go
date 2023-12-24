@@ -1,48 +1,58 @@
-package models
+package entity
 
 import (
 	// "bytes"
-	"time"
-	"database/sql"
+	// "time"
+	// "database/sql"
 	"fmt"
 	"log"
 	// "net/http"
 	// "strconv"
 
 	// "github.com/gin-gonic/gin"
-	"github.com/go-sql-driver/mysql"
+	"PRITRAS/database"
 )
 
 type AppUser struct {
-	UID			string `json:"UID"`
-	UserId		string `json:"UserId"`
-	UserName 	string `json:"UserName"`
+	UID	        		string `json:"UID"`
+	UserId		        string `json:"UserId"`
+	UserName 		    string `json:"UserName"`
+	Email 				string `json:"Email"`
+	IsAdmin 			string `json:"IsAdmin"`
+	password 			string `json:"Password"`
+	PhoneNumber 		string `json:"PhoneNumber"`
+	Image 			    string `json:"Image"`
+	Code 			    string `json:"Code"`
+	DateAdded 			string `json:"DateAdded"`
+	Status 			    string `json:"Status"`
+	KakaoId 			string `json:"KakaoId"`
+	Memo 			    string `json:"Memo"`
+	CompanyCode 		string `json:"CompanyCode"`
 }
 
-func init() {
-	fmt.Println("entity-model: appuser-init")
-}
-
-func GetUser(companyCode string) []AppUser {
-	db := GetConnector()
+func GetUsers(companyCode string) []AppUser {
+	db := database.GetConnector()
 	err := db.Ping()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	rows, err := db.Query(`
-		select u.UID, u.UserId, u.UserName 
-		from appUsers as u
-	`)
+		select 
+            UID, UserId, UserName, Email, PhoneNumber, Image, DateAdded, Status, KakaoId, Memo, CompanyCode
+		from AppUsers as u
+        where u.CompanyCode=?
+        order by u.UserName desc
+	`, companyCode)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var users []AppUser
-	var UID, UserId, UserName string
+	var UID, UserId, UserName, Email, PhoneNumber, Image, DateAdded, Status, KakaoId, Memo, CompanyCode string
 
 	for rows.Next() {
-		err := rows.Scan(&UID, &UserId, &UserName)
+		err := rows.Scan(&UID, &UserId, &UserName, &Email, &PhoneNumber, &Image, &DateAdded, &Status, &KakaoId, &Memo, &CompanyCode)
 		if err != nil {
 		  	log.Fatal(err)
 		}
@@ -50,8 +60,15 @@ func GetUser(companyCode string) []AppUser {
 			UID: UID,
 			UserId: UserId,
 			UserName: UserName,
+			Email: Email,
+			PhoneNumber: PhoneNumber,
+			Image: Image,
+			DateAdded: DateAdded,
+			Status: Status,
+			KakaoId: KakaoId,
+			Memo: Memo,
+			CompanyCode: CompanyCode,
 		})
-		fmt.Println(UID, UserId, UserName)
 	}
 
 	defer db.Close()
