@@ -18,7 +18,6 @@ type RequestData struct {
 
 func InsertWorkSpace(c *gin.Context) {
 	// body := c.Request.Body
-	fmt.Println("InsertWorkSpace")
 	// var ws entity.WorkSpace
 	// var members []entity.WorkSpaceMember
 	var requestData RequestData

@@ -63,3 +63,41 @@ func GetUserOfWorkSpace(UID string) []WorkSpace {
 
 	return ws
 }
+
+/*
+	특정 workSpaceId로 워크스페이스의 정보를 들고오는 Controller
+*/
+func GetWorkSpaceOfWorkSpaceId(workSpaceId string) WorkSpace {
+	db := database.GetConnector()
+	err := db.Ping()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	rows, err := db.Query(`
+		select 
+            ws.WorkSpaceId, ws.WorkSpaceName, ws.Photo
+		from WorkSpaces as ws
+		where ws.WorkSpaceId = ?
+	`, workSpaceId)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var ws WorkSpace
+	var WorkSpaceId int
+	var WorkSpaceName, Photo string
+	for rows.Next() {
+		err := rows.Scan(&WorkSpaceId, &WorkSpaceName, &Photo)
+		if err != nil {
+		  	log.Fatal(err)
+		}
+		ws.WorkSpaceId = WorkSpaceId;
+		ws.WorkSpaceName = WorkSpaceName;
+		ws.Photo = Photo;
+	}
+
+	defer db.Close()
+
+	return ws
+}

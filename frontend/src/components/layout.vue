@@ -5,7 +5,7 @@
             container
             style="height: 100vh;"
             class="shadow-2 rounded-borders">
-            <q-header reveal class="bg-grey" v-if="isHeaderShow">
+            <q-header reveal class="bg-black" v-if="isHeaderShow">
                 <q-toolbar>
                     <q-btn flat @click="toggleDrawerLeft" round dense icon="dashboard" />
                     <q-toolbar-title class="fkB">
@@ -62,7 +62,7 @@
                                     <q-space />
                                     <div>
                                         <q-btn icon="add" flat dense size="sm"
-                                            @click="$router.push('/workSpace/setting/0')" />
+                                            @click="$router.push('/setting/workSpace/0')" />
                                     </div>
                                 </div>
                             </q-item-label>
@@ -207,6 +207,7 @@ export default {
         },
         goto_workSpace(WorkSpaceId) {
             let vm = this;
+            // window.location.href = '/#/workSpace/' + WorkSpaceId;
             vm.$router.push(`/workSpace/${WorkSpaceId}`);
         },
 
@@ -218,7 +219,7 @@ export default {
     },
     mounted() {
         let vm = this;
-        console.log(vm.$route.fullPath.split("/"))
+        console.log("route:", );
     }
 }
 </script>

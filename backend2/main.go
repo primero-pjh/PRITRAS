@@ -16,6 +16,7 @@ import (
 	// "PRITRAS/controllers/appUsers"
 	user "PRITRAS/controllers/user/company"
 	workSpace "PRITRAS/controllers/workSpace"
+	objective "PRITRAS/controllers/objective"
 	user_workSpace "PRITRAS/controllers/user/workSpace"
 )
 
@@ -98,8 +99,13 @@ func main() {
 	}
 	v2Api := router.Group("/api/workSpace") 
 	{
+		v2Api.GET("/:workSpaceId", workSpace.GetWorkSpace)
 		v2Api.POST("/", workSpace.InsertWorkSpace)
-		// v1Api.GET("/company/:companyCode/workSpaces", user.GetWorkSpaces)
+	}
+	v3Api := router.Group("/api/objective") 
+	{
+		v3Api.GET("/:workSpaceId", objective.GetObjective)
+		v3Api.POST("/", objective.InsertObjective)
 	}
 
 

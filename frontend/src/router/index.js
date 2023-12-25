@@ -4,7 +4,7 @@ import loginVue from "@/views/login.vue";
 import calendarVue from "@/views/calendar.vue";
 import errorVue from "@/views/error.vue";
 import okrVue from "@/views/okr.vue";
-import workSpaceSettingVue from "@/views/workSpace/settings.vue";
+import settingWorkSpace from "@/views/setting/workSpace.vue";
 import workSpaceVue from "@/views/workSpace/index.vue";
 
 const routes = [
@@ -17,10 +17,10 @@ const routes = [
         meta: { title: '캘린더', hasLogged: true } },
     { path: "/okr", name: "okr", component: okrVue,
         meta: { title: 'OKR', hasLogged: true } },
-    { path: "/workSpace/setting/:WorkSpaceId", name: "workSpaceSetting", 
-        component: workSpaceSettingVue,
+    { path: "/setting/workSpace/:WorkSpaceId", name: "settingWorkSpace", 
+        component: settingWorkSpace,
         meta: { title: '워크스페이스-세팅', hasLogged: true } },
-    { path: "/workSpace/:WorkSpaceId", name: "workSpace", 
+    { path: "/workSpace/:workSpaceId", name: "workSpace", 
         component: workSpaceVue,
         meta: { title: '워크스페이스', hasLogged: true } },
 

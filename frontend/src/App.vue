@@ -5,11 +5,13 @@
                 <router-view />
             </template>
         </layout>
+        <dialog_objective_modify_form ref="dialog_objective_modify_form" />
     </div>
 </template>
 
 <script>
 import layout from "@/components/layout.vue";
+import dialog_objective_modify_form from "@/components/objective/dialog_objective_modify_form.vue";
 
 export default {
     name: 'App',
@@ -17,6 +19,7 @@ export default {
     },
     components: {
         layout,
+        dialog_objective_modify_form,
     },
     data() {
         return {

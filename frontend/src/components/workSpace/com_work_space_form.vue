@@ -5,7 +5,7 @@
                 v-model="workSpace.WorkSpaceName"
                 :hint="'50자 이내로 작성해주세요.' + '(' + workSpace.WorkSpaceName.length + '/50)'" 
                 :error="formError.WorkSpaceName?true:false" :error-message="formError.WorkSpaceName" />
-        </div>        
+        </div> 
     </div>
 </template>
 
