@@ -18,7 +18,6 @@ import '@/assets/css/common.css';
 // });
 axios.interceptors.response.use((res) => {
     let data = res.data;
-    console.log("data:", data);
     if(data.success == 0 && Object.prototype.hasOwnProperty.call(data, "isLogged")) { // Jwt 토큰 검증에 실패한 경우 에러코드 출력 후 Login 페이지로 이동
         alert(data.message);
         window.location = "/#/login";

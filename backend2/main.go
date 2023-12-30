@@ -17,6 +17,7 @@ import (
 	user "PRITRAS/controllers/user/company"
 	workSpace "PRITRAS/controllers/workSpace"
 	objective "PRITRAS/controllers/objective"
+	okr "PRITRAS/controllers/okr"
 	user_workSpace "PRITRAS/controllers/user/workSpace"
 )
 
@@ -106,6 +107,11 @@ func main() {
 	{
 		v3Api.GET("/:workSpaceId", objective.GetObjective)
 		v3Api.POST("/", objective.InsertObjective)
+	}
+	v4Api := router.Group("/api/okr") 
+	{
+		v4Api.GET("/:workSpaceId", okr.GetOKR)
+		v4Api.POST("/", okr.InsertOKR)
 	}
 
 

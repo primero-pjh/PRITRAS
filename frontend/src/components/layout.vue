@@ -14,7 +14,8 @@
                     <template v-if="$store.state.isLogged">
                         <q-btn flat icon="notifications" />
                         <q-img src="https://cdn.quasar.dev/img/boy-avatar.png" @click="toggleDrawerRight" 
-                            style="width: 40px; border-radius: 15px; cursor: pointer;" fit="cover" />
+                            style="width: 40px; border-radius: 25px; cursor: pointer; border: 3px solid white;" 
+                            fit="cover" />
                     </template>
                     <template v-else>
                         <q-btn class="fkB ft16" outline label="로그인" @click="goto_login" />

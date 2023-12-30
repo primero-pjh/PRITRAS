@@ -1,5 +1,5 @@
 <template>
-    <div id="dialog_objective_modify_form">
+    <div id="dialog_new_okr_form">
         <q-dialog v-model="isOpen" position="right" full-height>
             <q-card style="width: 600px;" class="column full-height">
                 <q-card-section>
@@ -15,13 +15,15 @@
                 <q-card-section class="col">
                     <div style="height: 100%;">
                         <q-scroll-area style="height: 100%; max-width: 100%;" class="q-px-md">
-                            <q-input label="제목(목표)" class="faSB" filled dense v-model="form.Title" clearable
+                            <div class="text-h6 faSB">OKR 제목</div>
+                            <q-input  class="faSB" filled dense v-model="form.Title" clearable
                                 :error="formError.Title?true:false" :error-message="formError.Title"
-                                hint="팀의 목표를 가시화하고 공동의 성과를 투명하고 정확하게 측정하세요."
+                                placeholder="팀의 목표를 가시화하고 공동의 성과를 투명하고 정확하게 측정하세요."
                                 />
+                            <div class="text-h6 faSB">담당자</div>
                             <q-select
                                 filled v-model="managers" :options="appUsers"
-                                label="담당자" dense class="faSB"
+                                dense class="faSB"
                                 options-selected-class="text-deep-orange" multiple
                                 :error="formError.managers?true:false" :error-message="formError.managers" >
                                 <template v-slot:selected>
@@ -53,7 +55,8 @@
                                     </q-item>
                                 </template>
                             </q-select>
-                            <div class="row ">
+                            <div class="text-h6 faSB">기간</div>
+                            <div class="row">
                                 <q-input v-model="form.StartDate" type="date" filled dense style="width: 200px;" class="faSB"
                                 :error="formError.StartDate?true:false" :error-message="formError.StartDate" /> 
                                 &nbsp;
@@ -63,6 +66,7 @@
                                 :error="formError.EndDate?true:false" :error-message="formError.EndDate" />
                             </div>
                             
+                            <div class="text-h6 faSB">설명</div>
                             <q-editor v-model="form.Body" min-height="100" placeholder="설명을 입력해주세요."
                                 :error="formError.Body?true:false" :error-message="formError.Body" />
                         </q-scroll-area>
@@ -72,7 +76,7 @@
                 <q-separator />
                 <q-card-actions align="right">
                     <q-btn label="닫기" outline v-close-popup />
-                    <q-btn label="저장" outline color="positive" @click="onSave" />
+                    <q-btn label="OKR 추가" color="primary" @click="onSave" />
                 </q-card-actions>
             </q-card>
         </q-dialog>
@@ -83,7 +87,7 @@
 import axios from "axios";
 
 export default {
-    name: 'dialog_objective_modify_form',
+    name: 'dialog_new_okr_form',
     computed: {
         appUsers() {
             return this.$store.state.appUsers;
@@ -125,7 +129,7 @@ export default {
             this.formError.StartDate = err?.StartDate;
             this.formError.EndDate = err?.EndDate;
         },
-        open(mode, objectiveId, callback) {
+        open(mode, okrId, callback) {
             let vm = this;
             if(mode == 'add') {
                 vm.mode = mode;
@@ -138,7 +142,7 @@ export default {
             let vm = this;
             vm.clearError();
             vm.$q.loading.show();
-            let objective = {
+            let okr = {
                 Title: vm.form.Title,
                 Body: vm.form.Body,
                 StartDate: vm.form.StartDate,
@@ -146,8 +150,8 @@ export default {
                 WorkSpaceId: 2,
                 WriterUID: vm.$store.state.UID,
             }
-            axios.post(`/api/objective`, {
-                objective,
+            axios.post(`/api/okr`, {
+                okr,
                 managers: vm.managers,
             }).then((res) => {
                 let data = res.data;
@@ -156,7 +160,8 @@ export default {
                 vm.isOpen = false;
                 vm.$q.loading.hide();
             }).catch((err) => {
-                if(err.response.status === 403) {
+                console.log(err);
+                if(err?.response?.status === 403) {
                     vm.setError(err.response.data.error);
                 }
                 vm.$q.loading.hide();
