@@ -114,26 +114,38 @@
                         <q-separator></q-separator>
                         <div>
                             <q-list bordered>
-                                <q-item-label class="faH ft16 q-pa-md">CONFLUENCE</q-item-label>
+                                <q-item-label class="faH text-h6 q-pa-md">CONFLUENCE</q-item-label>
                                 <q-item clickable v-ripple @click="onLogout">
                                     <q-item-section>
-                                        <q-item-label class="faB">프로파일</q-item-label>
+                                        <q-item-label class="faSB text-body1">프로파일</q-item-label>
                                     </q-item-section>
                                 </q-item>
                                 <q-item clickable v-ripple @click="onLogout">
                                     <q-item-section>
-                                        <q-item-label class="faB">작업</q-item-label>
+                                        <q-item-label class="faSB text-body1">작업</q-item-label>
                                     </q-item-section>
                                 </q-item>
                                 <q-item clickable v-ripple @click="onLogout">
                                     <q-item-section>
-                                        <q-item-label class="faB">환경설정</q-item-label>
+                                        <q-item-label class="faSB text-body1">환경설정</q-item-label>
                                     </q-item-section>
                                 </q-item>
                                 <q-separator></q-separator>
                                 <q-item clickable v-ripple @click="onLogout">
                                     <q-item-section>
-                                        <q-item-label class="faB">로그아웃</q-item-label>
+                                        <q-item-label class="faSB text-body1">로그아웃</q-item-label>
+                                    </q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item-label class="faH text-h6 q-pa-md">다국어 지원</q-item-label>
+                                <q-item clickable v-ripple @click="onChangeLang('KO')">
+                                    <q-item-section>
+                                        <q-item-label class="faSB text-body1">{{ $t("languages.korean")}}</q-item-label>
+                                    </q-item-section>
+                                </q-item>
+                                <q-item clickable v-ripple @click="onChangeLang('EN')">
+                                    <q-item-section>
+                                        <q-item-label class="faSB text-body1">{{ $t("languages.english")}}</q-item-label>
                                     </q-item-section>
                                 </q-item>
                             </q-list>
@@ -178,6 +190,12 @@ export default {
         }
     },
     methods: {
+        onChangeLang(lang) {
+            let vm = this;
+            if(!lang) { return; }
+            vm.$i18n.locale = lang;
+            vm.$store.state.setCookie('locale', lang);
+        },
         toggleDrawerLeft() {
             this.$store.commit("toggleDrawerLeft");
         },
@@ -208,6 +226,7 @@ export default {
         },
         goto_workSpace(WorkSpaceId) {
             let vm = this;
+            console.log("WorkSpaceId:", WorkSpaceId);
             // window.location.href = '/#/workSpace/' + WorkSpaceId;
             vm.$router.push(`/workSpace/${WorkSpaceId}`);
         },

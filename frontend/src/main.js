@@ -1,13 +1,23 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
-import store from "./store";
-import config from "../package.json";
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from "./store"
+import config from "../package.json"
 import { Quasar, Loading, Notify, Dialog } from 'quasar'
 import '@quasar/extras/material-icons/material-icons.css'
 import 'quasar/dist/quasar.css'
-import axios from 'axios';
-import '@/assets/css/common.css';
+import axios from 'axios'
+import '@/assets/css/common.css'
+
+import { createI18n } from 'vue-i18n'
+import messages from '../lang/index'
+
+const i18n = createI18n({
+    legacy: false,
+    locale: 'KO',
+    fallbackLocale: 'EN',
+    messages,
+});
 
 // axios.interceptors.request.use((config) => {
 //   let token = $c.getCookie('token');  // Browser-Cookie에 저장된 token을 가져온다.
@@ -93,6 +103,7 @@ app.config.globalProperties.$axios = axios;
 window.$c = $c;
 console.error(`ybr version: ${config.version}`);
 app.use(store);
+app.use(i18n);
 app.use(Quasar, {
   plugins: {
     Loading, Notify, Dialog

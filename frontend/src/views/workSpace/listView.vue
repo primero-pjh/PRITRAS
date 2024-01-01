@@ -9,8 +9,11 @@
                                 <span class="text-h6 faSB">{{ row.Title }}</span>
                             </q-item-section>
 
-                            <q-item-section>
-                                Bluetooth technology
+                            <q-item-section class="faSB text-body1">
+                                <div> {{ row.StartDateView }}</div>
+                            </q-item-section>
+                            <q-item-section class="faSB text-body1">
+                                <div> {{ row.EndDateView }}</div>
                             </q-item-section>
 
                             <q-item-section side>
@@ -21,7 +24,7 @@
                         </template>
                         <q-card>
                             <q-card-section>
-                                <template v-if="row.keyResults?.length == 0">
+                                <template v-if="!row.keyResults || row.keyResults?.length == 0">
                                     <div class="faSB text-h6">
                                         아직 핵심결과가 지정이 안됐어요! 
                                     </div>

@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 // import { io } from "socket.io-client";
 const io = require('socket.io-client');
+import { useI18n } from "vue-i18n";
 
 // state, getters, mutations, actions, modules
 const store = createStore({

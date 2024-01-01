@@ -20,10 +20,9 @@ const routes = [
     { path: "/setting/workSpace/:WorkSpaceId", name: "settingWorkSpace", 
         component: settingWorkSpace,
         meta: { title: '워크스페이스-세팅', hasLogged: true } },
-    { path: "/workSpace/:workSpaceId", name: "workSpace", 
-        component: workSpaceVue,
+        
+    { path: "/workSpace/:workSpaceId", name: "workSpace",  component: workSpaceVue,
         meta: { title: '워크스페이스', hasLogged: true } },
-
     /*error*/
     { path: "/error", name: "error", component: errorVue, label: "404", },
     { path: "/:pathMatch(.*)*", redirect: "/error" },

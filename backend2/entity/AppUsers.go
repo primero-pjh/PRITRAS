@@ -21,7 +21,7 @@ type AppUser struct {
 	IsAdmin 			string `json:"IsAdmin"`
 	password 			string `json:"Password"`
 	PhoneNumber 		string `json:"PhoneNumber"`
-	Image 			    string `json:"Image"`
+	Photo 			    string `json:"Photo"`
 	Code 			    string `json:"Code"`
 	DateAdded 			string `json:"DateAdded"`
 	Status 			    string `json:"Status"`
@@ -39,7 +39,7 @@ func GetUsers(companyCode string) []AppUser {
 
 	rows, err := db.Query(`
 		select 
-            UID, UserId, UserName, Email, PhoneNumber, Image, DateAdded, Status, KakaoId, Memo, CompanyCode
+            UID, UserId, UserName, Email, PhoneNumber, Photo, DateAdded, Status, KakaoId, Memo, CompanyCode
 		from AppUsers as u
         where u.CompanyCode=?
         order by u.UserName desc
@@ -49,10 +49,10 @@ func GetUsers(companyCode string) []AppUser {
 	}
 
 	var users []AppUser
-	var UID, UserId, UserName, Email, PhoneNumber, Image, DateAdded, Status, KakaoId, Memo, CompanyCode string
+	var UID, UserId, UserName, Email, PhoneNumber, Photo, DateAdded, Status, KakaoId, Memo, CompanyCode string
 
 	for rows.Next() {
-		err := rows.Scan(&UID, &UserId, &UserName, &Email, &PhoneNumber, &Image, &DateAdded, &Status, &KakaoId, &Memo, &CompanyCode)
+		err := rows.Scan(&UID, &UserId, &UserName, &Email, &PhoneNumber, &Photo, &DateAdded, &Status, &KakaoId, &Memo, &CompanyCode)
 		if err != nil {
 		  	log.Fatal(err)
 		}
@@ -62,7 +62,7 @@ func GetUsers(companyCode string) []AppUser {
 			UserName: UserName,
 			Email: Email,
 			PhoneNumber: PhoneNumber,
-			Image: Image,
+			Photo: Photo,
 			DateAdded: DateAdded,
 			Status: Status,
 			KakaoId: KakaoId,

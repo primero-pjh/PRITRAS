@@ -30,6 +30,12 @@ export default {
     },
     mounted: function() {
         let vm = this;
+        const locale = vm.$store.state.getCookie('locale');
+        vm.$i18n.locale = locale;
+        if(!locale) {
+            vm.$store.state.setCookie('locale', 'KO');
+            vm.$i18n.locale = 'KO';
+        }
         vm.$store.state.host = process.env.VUE_APP_HOST;
         vm.$router.beforeEach((to, from, next) => {
             // console.log(to, from);
