@@ -10,18 +10,16 @@ import (
 type Objective struct {
 	ObjectiveId			int 	`json:"ObjectiveId"`
 	Title				string 	`json:"Title"`
-	WorkSpaceId 		int 	`json:"WorkSpaceId"`
+	OKRId 				int 	`json:"OKRId"`
 	WriterUID 			string 	`json:"WriterUID"`
 	Body 				string 	`json:"Body"`
+	Status 				int 	`json:"Status"`
 	StartDate 			string 	`json:"StartDate"`
 	EndDate 			string 	`json:"EndDate"`
 	DateAdded 			string 	`json:"DateAdded"`
 }
 
-/*
-	특정 유저(UID)의 워크스페이스를 들고오는 Controller
-*/
-func GetObjectiveOfWorkSpaceId(workSpaceId string) []Objective {
+func GetObjectiveOfOKRId(OKRId int) []Objective {
 	db := database.GetConnector()
 	err := db.Ping()
 	if err != nil {
@@ -30,31 +28,33 @@ func GetObjectiveOfWorkSpaceId(workSpaceId string) []Objective {
 	
 	rows, err := db.Query(`
 		select 
-            o.ObjectiveId, o.Title, o.WorkSpaceId, o.WriterUID, o.Body, o.StartDate, o.EndDate, o.DateAdded
+            o.ObjectiveId, o.Title, o.OKRId, o.WriterUID, o.Body, o.Status,
+			o.StartDate, o.EndDate, o.DateAdded
 		from Objectives as o
-		where o.WorkSpaceId = ?
-	`, workSpaceId)
+		where o.OKRId = ?
+	`, OKRId)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var objectives []Objective
-	var ObjectiveId, WorkSpaceId int
-	var Title, WriterUID, Body, StartDate, EndDate, DateAdded string
+	var objective Objective
 	for rows.Next() {
-		err := rows.Scan(&ObjectiveId, &Title, &WorkSpaceId, &WriterUID, &Body, &StartDate, &EndDate, &DateAdded)
+		err := rows.Scan(&objective.ObjectiveId, &objective.Title, &objective.OKRId, &objective.WriterUID, &objective.Body, 
+			&objective.Status, &objective.StartDate, &objective.EndDate, &objective.DateAdded)
 		if err != nil {
 		  	log.Fatal(err)
 		}
 		objectives = append(objectives, Objective {
-			ObjectiveId: ObjectiveId,
-			WorkSpaceId: WorkSpaceId,
-			Title: Title,
-			WriterUID: WriterUID,
-			Body: Body,
-			StartDate: StartDate,
-			EndDate: EndDate,
-			DateAdded: DateAdded,
+			ObjectiveId: objective.ObjectiveId,
+			OKRId: objective.OKRId,
+			Title: objective.Title,
+			WriterUID: objective.WriterUID,
+			Body: objective.Body,
+			Status: objective.Status,
+			StartDate: objective.StartDate,
+			EndDate: objective.EndDate,
+			DateAdded: objective.DateAdded,
 		})
 	}
 

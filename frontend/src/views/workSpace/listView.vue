@@ -1,49 +1,25 @@
 <template>
     <div id="listView"  class="bg-white">
         <div class="w100p">
-            <q-list bordered class="rounded-borders">
+            <q-list bordered>
                 <template v-for="row, idx in okrs" :key="idx">
-                    <q-expansion-item expand-separator>
-                        <template v-slot:header>
-                            <q-item-section avatar style="width: 50%;">
-                                <span class="text-h6 faSB">{{ row.Title }}</span>
-                            </q-item-section>
-
-                            <q-item-section class="faSB text-body1">
-                                <div> {{ row.StartDateView }}</div>
-                            </q-item-section>
-                            <q-item-section class="faSB text-body1">
-                                <div> {{ row.EndDateView }}</div>
-                            </q-item-section>
-
-                            <q-item-section side>
-                                <div class="row items-center text-h6 faSB">
-                                    0%
-                                </div>
-                            </q-item-section>
-                        </template>
-                        <q-card>
-                            <q-card-section>
-                                <template v-if="!row.keyResults || row.keyResults?.length == 0">
-                                    <div class="faSB text-h6">
-                                        아직 핵심결과가 지정이 안됐어요! 
-                                    </div>
-                                </template>
-                                <template v-else>
-                                    <template v-for="row, idx2 in row.keyResults" :key="idx2">
-                                        <q-list bordered class="rounded-borders">
-                                            <q-item>
-                                                <q-item-section>
-                                                    안녕
-                                                </q-item-section>
-                                            </q-item>
-                                        </q-list>
-                                    </template>
-                                </template>
-                                
-                            </q-card-section>
-                        </q-card>
-                    </q-expansion-item>
+                    <q-item clickable v-ripple @click="goto_page(row)">
+                        <q-item-section>
+                            <div class="row items-center">
+                                <span class="faB text-h6 q-mr-md">{{ row.Title }}</span>
+                                <com_okr_status :OKR="row" ref="com_okr_status" />
+                            </div>
+                        </q-item-section>
+                        <q-item-section>
+                        </q-item-section>
+                        <q-item-section class="faSB text-body1">
+                            {{ row.StartDateView }} ~ {{ row.EndDateView }}
+                        </q-item-section>
+                        <q-item-section avatar>
+                            <q-icon color="black" size="2.4em" name="open_in_new" />
+                        </q-item-section>
+                    </q-item>
+                    <q-separator />
                 </template>
             </q-list>
         </div>
@@ -51,17 +27,23 @@
 </template>
 
 <script>
+import com_okr_status from "@/components/OKR/com_okr_status.vue"
 
 export default {
     name: 'listView',
     props: ['okrs'],
     components: {
+        com_okr_status,
     },
     data() {
         return {
         }
     },
     methods: {
+        goto_page(okr) {
+            let vm = this;
+            vm.$router.push(`/workSpace/${okr.WorkSpaceId}/OKR/${okr.OKRId}`);
+        }
     },
     mounted() {
     },

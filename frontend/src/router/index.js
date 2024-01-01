@@ -3,9 +3,10 @@ import homeVue from "@/views/home.vue";
 import loginVue from "@/views/login.vue";
 import calendarVue from "@/views/calendar.vue";
 import errorVue from "@/views/error.vue";
-import okrVue from "@/views/okr.vue";
+// import okrVue from "@/views/okr.vue";
 import settingWorkSpace from "@/views/setting/workSpace.vue";
 import workSpaceVue from "@/views/workSpace/index.vue";
+import okrVue from "@/views/workSpace/OKR/index.vue";
 
 const routes = [
     /* default-user */
@@ -23,6 +24,8 @@ const routes = [
         
     { path: "/workSpace/:workSpaceId", name: "workSpace",  component: workSpaceVue,
         meta: { title: '워크스페이스', hasLogged: true } },
+    { path: "/workSpace/:workSpaceId/OKR/:OKRId", name: "okr",  component: okrVue,
+        meta: { title: 'OKR', hasLogged: true } },
     /*error*/
     { path: "/error", name: "error", component: errorVue, label: "404", },
     { path: "/:pathMatch(.*)*", redirect: "/error" },

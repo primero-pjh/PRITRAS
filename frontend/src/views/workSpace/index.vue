@@ -1,5 +1,15 @@
 <template>
     <div id="workSpaceVue" style="height: 100%;">
+        <div class="bg-black text-white q-mb-md" style="border-radius: 5px;">
+            <q-toolbar>
+                <q-breadcrumbs class="faSB text-h6">
+                    <q-breadcrumbs-el class="text-white" label="워크스페이스" />
+                    <q-breadcrumbs-el v-if="workSpace" class="text-primary" 
+                        @click="$router.push('/workSpace/' + workSpace.WorkSpaceId)"
+                        :label="workSpace.WorkSpaceName" style="cursor: pointer;"/>
+                </q-breadcrumbs>
+            </q-toolbar>
+        </div>
         <div class="row">
             <div>
                 <q-btn label="OKR 추가" color="black" icon="add" class="faSB ft16" 
@@ -62,6 +72,10 @@ export default {
         }
     },
     methods: {
+        initPage() {
+            let vm = this;
+            vm.okrs = [];
+        },
         onAddOkr() {
             let vm = this;
             vm.$root.$refs.dialog_new_okr_form.open('add', 0, () => {
@@ -77,15 +91,18 @@ export default {
                 let data = res.data;
                 if(data.success) {
                     let okrs = data.okrs;
+                    okrs.map((x) => {
+                        x["StartDateView"] = vm.$c.formatDate(new Date(x.StartDate), "date");
+                        x["EndDateView"] = vm.$c.formatDate(new Date(x.EndDate), "date");
+                    });
                     vm.okrs = okrs;
-                    console.log("okrs:", okrs);
+
                     setTimeout(() => { vm.isIndeterminate = false; });
                 }
                 vm.$q.loading.hide();
             }).catch((err) => {
                 vm.$q.loading.hide();
                 if(err.response?.status == 403) {
-                    console.log("err:", err);
                     vm.$c.response_notify("error", "negative", err.response?.data?.message);
                 }
             });
@@ -99,6 +116,8 @@ export default {
         }
 
         vm.workSpaceId = vm.$route.params.workSpaceId;
+        vm.workSpace = vm.$store.state.workSpaces.find(x=>x.WorkSpaceId == vm.workSpaceId);
+        vm.initPage();
         vm.loadOKR(vm.workSpaceId);
         
         vm.$watch(() => this.$route.params, (newValue, oldValue) => {
@@ -111,8 +130,10 @@ export default {
             }
 
             vm.workSpaceId = vm.$route.params.workSpaceId;
+            vm.workSpace = vm.$store.state.workSpaces.find(x=>x.WorkSpaceId == vm.workSpaceId);
+            vm.initPage();
             vm.loadOKR(vm.workSpaceId);
-        })
+        });
     },
 }
 </script>

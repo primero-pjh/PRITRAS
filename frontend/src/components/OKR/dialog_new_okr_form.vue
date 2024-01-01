@@ -20,48 +20,11 @@
                                 :error="formError.Title?true:false" :error-message="formError.Title"
                                 placeholder="팀의 목표를 가시화하고 공동의 성과를 투명하고 정확하게 측정하세요."
                                 />
-                            <div class="text-h6 faSB">담당자</div>
-                            <q-select
-                                filled v-model="managers" :options="appUsers"
-                                dense class="faSB"
-                                options-selected-class="text-deep-orange" multiple
-                                :error="formError.managers?true:false" :error-message="formError.managers" >
-                                <template v-slot:selected>
-                                    <template v-for="manager, idx in managers" :key="idx">
-                                        <q-chip removable @remove="managers.splice(idx, 1)">
-                                            <q-avatar>
-                                                <q-img :src="$store.state.host + manager.Image" />
-                                            </q-avatar>
-                                            <span class="faSB text-bold">{{ manager.UserName }}</span>
-                                        </q-chip>
-                                    </template>
-                                </template>
-                                <template v-slot:option="scope">
-                                    <q-item v-bind="scope.itemProps">
-                                        <q-item-section avatar>
-                                            <q-img :src="$store.state.host + scope.opt.Image" />
-                                        </q-item-section>
-                                        <q-item-section>
-                                            <q-item-label class="faSB">
-                                                {{ scope.opt.UserName }}
-                                            </q-item-label>
-                                            <q-item-label caption>{{ scope.opt.PhoneNumber }}</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                </template>
-                                <template v-slot:no-option>
-                                    <q-item>
-                                        <q-item-section class="faSB text-grey">등록된 구성원이 없습니다.</q-item-section>
-                                    </q-item>
-                                </template>
-                            </q-select>
                             <div class="text-h6 faSB">기간</div>
                             <div class="row">
                                 <q-input v-model="form.StartDate" type="date" filled dense style="width: 200px;" class="faSB"
                                 :error="formError.StartDate?true:false" :error-message="formError.StartDate" /> 
-                                &nbsp;
-                                ~
-                                &nbsp;
+                                <span class="faSB">&nbsp;~&nbsp;</span>
                                 <q-input v-model="form.EndDate" type="date" filled dense style="width: 200px;" class="faSB"
                                 :error="formError.EndDate?true:false" :error-message="formError.EndDate" />
                             </div>
@@ -75,8 +38,8 @@
                 </q-card-section>
                 <q-separator />
                 <q-card-actions align="right">
-                    <q-btn label="닫기" outline v-close-popup />
-                    <q-btn label="OKR 추가" color="primary" @click="onSave" />
+                    <q-btn class="faSB text-body1" label="닫기" outline v-close-popup />
+                    <q-btn class="faSB text-body1" label="OKR 추가" color="primary" @click="onSave" />
                 </q-card-actions>
             </q-card>
         </q-dialog>
@@ -101,6 +64,7 @@ export default {
             form: {
                 Title: '',
                 Body: '',
+                Status: '',
                 StartDate: '',
                 EndDate: '',
             },
@@ -145,6 +109,7 @@ export default {
             let okr = {
                 Title: vm.form.Title,
                 Body: vm.form.Body,
+                Status: vm.form.Status,
                 StartDate: vm.form.StartDate,
                 EndDate: vm.form.EndDate,
                 WorkSpaceId: 2,
@@ -152,7 +117,6 @@ export default {
             }
             axios.post(`/api/okr`, {
                 okr,
-                managers: vm.managers,
             }).then((res) => {
                 let data = res.data;
                 vm.$c.response_notify("check", "positive", data.message);
@@ -160,7 +124,6 @@ export default {
                 vm.isOpen = false;
                 vm.$q.loading.hide();
             }).catch((err) => {
-                console.log(err);
                 if(err?.response?.status === 403) {
                     vm.setError(err.response.data.error);
                 }

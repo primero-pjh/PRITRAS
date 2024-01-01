@@ -16,6 +16,8 @@ import (
 	// "PRITRAS/controllers/appUsers"
 	user "PRITRAS/controllers/user/company"
 	workSpace "PRITRAS/controllers/workSpace"
+	workSpace_OKR "PRITRAS/controllers/workSpace/okrs"
+	workSpace_OKR_objective "PRITRAS/controllers/workSpace/okrs/objective"
 	objective "PRITRAS/controllers/objective"
 	okr "PRITRAS/controllers/okr"
 	user_workSpace "PRITRAS/controllers/user/workSpace"
@@ -102,10 +104,16 @@ func main() {
 	{
 		v2Api.GET("/:workSpaceId", workSpace.GetWorkSpace)
 		v2Api.POST("/", workSpace.InsertWorkSpace)
+
+		v2Api_OKRApi := v2Api.Group("/:workSpaceId/OKR")
+        {
+            v2Api_OKRApi.GET("/:OKRId", workSpace_OKR.GetWorkSpace_OKR_OKRId_ROUTER)
+			v2Api_OKRApi.GET("/:OKRId/objectives", workSpace_OKR_objective.GetObjective_OKRId_ROUTER)
+        }
 	}
 	v3Api := router.Group("/api/objective") 
 	{
-		v3Api.GET("/:workSpaceId", objective.GetObjective)
+		// v3Api.GET("/:workSpaceId", objective.GetObjective)
 		v3Api.POST("/", objective.InsertObjective)
 	}
 	v4Api := router.Group("/api/okr") 

@@ -1,22 +1,23 @@
-package okr
+package workSpace
 
 import (
 	// "fmt"
 	// "log"
-	// "strconv"
+	"strconv"
 	"github.com/gin-gonic/gin"
 	"PRITRAS/entity"
 )
 
-type OKRModelExt struct {
-	entity.OKR
-	OKRManagers 	[]entity.OKRManager
-}
+// type OKRModelExt struct {
+// 	entity.OKR
+// 	OKRManagers 	[]entity.OKRManager
+// }
 
-func GetOKR(c *gin.Context) {
+func GetWorkSpace_OKR_OKRId_ROUTER(c *gin.Context) {
 	workSpaceId := c.Param("workSpaceId")
+	OKRId, _ := strconv.Atoi(c.Param("OKRId"))
 	
-	if workSpaceId == "0" {
+	if OKRId == 0 || workSpaceId == "0" {
 		c.JSON(403, gin.H {
 			"message": "잘못된 API 요청입니다. 확인 후 다시 시도해주세요.",
 		})
@@ -24,11 +25,11 @@ func GetOKR(c *gin.Context) {
 	}
 
 	// var returnData []OKRModelExt
-	var okrs []entity.OKR
-	okrs = entity.GetOKROfWorkSpaceId(workSpaceId)
+	var OKR entity.OKR
+	OKR = entity.GetOKROfOKRId(OKRId)
 	
 	c.JSON(200, gin.H {
 		"success": 1,
-		"okrs": okrs,
+		"OKR": OKR,
 	})
 }

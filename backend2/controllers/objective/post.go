@@ -37,10 +37,10 @@ func InsertObjective(c *gin.Context) {
 		error["Title"] = "필수입력 항목입니다."
 	}
 	if len(strings.TrimSpace(requestData.Objective.StartDate)) == 0 {
-		error["StartDate"] = "필수입력 항목입니다."
+		error["StartDate"] = "필수입력 항목입니다.(시작날짜)"
 	}
 	if len(strings.TrimSpace(requestData.Objective.EndDate)) == 0 {
-		error["EndDate"] = "필수입력 항목입니다."
+		error["EndDate"] = "필수입력 항목입니다.(종료날짜)"
 	}
 	if len(error) > 0 {
 		c.JSON(403, gin.H{
@@ -55,26 +55,29 @@ func InsertObjective(c *gin.Context) {
 		fmt.Println(err)
 	}
 
+	fmt.Println("------------------")
 	fmt.Println(requestData.Objective)
 	rows, err := db.Exec(`
 		insert into Objectives
 		(
-			Title, WorkSpaceId, WriterUID, Body, StartDate, EndDate, DateAdded
+			Title, OKRId, WriterUID, Body, Status, StartDate, EndDate, DateAdded
 		)
-		values (?, ?, ?, ?, ?, ?, ?)
+		values (?, ?, ?, ?, ?, ?, ?, ?)
 	`, 
 		requestData.Objective.Title,
-		requestData.Objective.WorkSpaceId,		
+		requestData.Objective.OKRId,		
 		requestData.Objective.WriterUID,
 		requestData.Objective.Body,
+		requestData.Objective.Status,
 		requestData.Objective.StartDate,
 		requestData.Objective.EndDate,
 		time.Now(),
 	)
-	objectiveId, err := rows.LastInsertId()
 	if err != nil {
 		log.Fatal(err)
 	}
+	objectiveId, err := rows.LastInsertId()
+	fmt.Println(objectiveId)
 
 	for _, manager := range requestData.Managers {
 		_, err := db.Exec(`
@@ -97,7 +100,7 @@ func InsertObjective(c *gin.Context) {
 
 	c.JSON(200, gin.H {
 		"success": 1,
-		"message": "신규 OKR를 성공적으로 생성하였습니다.",
-		"objectiveId": objectiveId,
+		"message": "신규 목표를 성공적으로 생성하였습니다.",
+		// "objectiveId": objectiveId,
 	})
 }

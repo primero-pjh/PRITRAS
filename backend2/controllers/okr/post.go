@@ -55,44 +55,24 @@ func InsertOKR(c *gin.Context) {
 		fmt.Println(err)
 	}
 
-	fmt.Println(requestData.OKR)
 	rows, err := db.Exec(`
 		insert into OKR
 		(
-			Title, WorkSpaceId, WriterUID, Body, StartDate, EndDate, DateAdded
+			Title, WorkSpaceId, WriterUID, Body, Status, StartDate, EndDate, DateAdded
 		)
 		values (?, ?, ?, ?, ?, ?, ?)
 	`, 
 		requestData.OKR.Title,
-		requestData.OKR.WorkSpaceId,		
+		requestData.OKR.WorkSpaceId,
 		requestData.OKR.WriterUID,
 		requestData.OKR.Body,
+		requestData.OKR.Status,
 		requestData.OKR.StartDate,
 		requestData.OKR.EndDate,
 		time.Now(),
 	)
 	okrId, err := rows.LastInsertId()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, manager := range requestData.Managers {
-		_, err := db.Exec(`
-			insert into OKRManagers
-			(
-				OKRId, ManagerUID, DateAdded
-			)
-			values (?, ?, ?)
-		`, 
-			okrId,
-			manager.UID,
-			time.Now(),
-		)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
+	
 	defer db.Close()
 
 	c.JSON(200, gin.H {
