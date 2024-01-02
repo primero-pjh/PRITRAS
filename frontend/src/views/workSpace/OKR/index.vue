@@ -77,7 +77,7 @@ export default {
         return {
             isIndeterminate: true,
 
-            viewType: 'tree',
+            viewType: 'list',
             dataset: {
                 value: '',
                 children: []

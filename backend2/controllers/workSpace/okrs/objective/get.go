@@ -27,7 +27,7 @@ func GetObjective_OKRId_ROUTER(c *gin.Context) {
 	// var returnData []OKRModelExt
 	var objectives []entity.Objective
 	objectives = entity.GetObjectiveOfOKRId(OKRId)
-	
+
 	c.JSON(200, gin.H {
 		"success": 1,
 		"objectives": objectives,

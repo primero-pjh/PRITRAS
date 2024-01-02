@@ -3,7 +3,7 @@
         <div class="w100p">
             <q-list bordered>
                 <template v-for="row, idx in objectives" :key="idx">
-                    <q-expansion-item  expand-separator>
+                    <q-expansion-item  expand-separator default-opened>
                         <template v-slot:header>
                             <q-item-section>
                                 <div class="row items-center">
@@ -23,10 +23,19 @@
                             <q-item-section class="faSB text-body1">
                                 {{ row.StartDateView }} ~ {{ row.EndDateView }}
                             </q-item-section>
-                            <q-item-section avatar>
-                                <q-icon color="black" size="2.4em" name="open_in_new" />
-                            </q-item-section>
                         </template>
+                        <q-card style="border-top: 2px solid #e3e3e3;" >
+                            <q-card-section>
+                                <q-bar class="bg-black text-white" 
+                                    style="height: 52px; border-radius: 15px;">
+                                    <div class="faSB text-body1">핵심결과 1</div>
+                                </q-bar>
+                                <q-bar class="bg-black text-white q-mt-sm"
+                                    style="height: 52px; border-radius: 15px;">
+                                    <div class="faSB text-body1">핵심결과 2</div>
+                                </q-bar>
+                            </q-card-section>
+                        </q-card>
                     </q-expansion-item>
                     <q-separator />
                 </template>
@@ -53,7 +62,8 @@ export default {
         }
     },
     mounted() {
-        
+        let vm = this;
+        console.log("objectives:", vm.objectives);
     },
 }
 </script>
