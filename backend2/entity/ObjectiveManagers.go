@@ -14,7 +14,13 @@ type ObjectiveManager struct {
 	DateAdded 			string 	`json:"DateAdded"`
 }
 
-func GetObjectiveManagerOfOKRId(OKRId int) []ObjectiveManager {
+type ObjectiveManagerExt struct {
+	ObjectiveManager
+	Photo 				string 	`json:"Photo"`
+	UserName 			string 	`json:"UserName"`
+}
+
+func GetObjectiveManagerOfObjectiveId(ObjectiveId int) []ObjectiveManagerExt {
 	db := database.GetConnector()
 	err := db.Ping()
 	if err != nil {
@@ -23,27 +29,33 @@ func GetObjectiveManagerOfOKRId(OKRId int) []ObjectiveManager {
 	
 	rows, err := db.Query(`
 		select 
-            om.*
+            om.*,
+			u.UserName, u.Photo
 		from ObjectiveManagers as om
-		where om.OKRId = ?
-	`, OKRId)
+		join AppUsers as u on om.ManagerUID=u.UID
+		where om.ObjectiveId = ?
+	`, ObjectiveId)
 	if err != nil {
 		log.Fatal(err)
 	}
 	  
-	var oms []ObjectiveManager
-	var om ObjectiveManager
+	var oms []ObjectiveManagerExt
+	var om ObjectiveManagerExt
 	for rows.Next() {
-		err := rows.Scan(&om.ObjectiveManagerId, 
-			&om.ObjectiveId, &om.ManagerUID, &om.DateAdded)
+		err := rows.Scan(&om.ObjectiveManagerId, &om.ObjectiveId, &om.ManagerUID, &om.DateAdded,
+			&om.UserName, &om.Photo)
 		if err != nil {
 		  	log.Fatal(err)
 		}
-		oms = append(oms, ObjectiveManager {
-			ObjectiveManagerId: om.ObjectiveManagerId,
-			ObjectiveId: om.ObjectiveId,
-			ManagerUID: om.ManagerUID,
-			DateAdded: om.DateAdded,
+		oms = append(oms, ObjectiveManagerExt {
+			ObjectiveManager: ObjectiveManager {
+				ObjectiveManagerId: 	om.ObjectiveManagerId,
+				ObjectiveId: 			om.ObjectiveId,
+				ManagerUID: 			om.ManagerUID,
+				DateAdded: 				om.DateAdded,
+			},
+			UserName: om.UserName,
+			Photo: om.Photo,
 		})
 	}
 

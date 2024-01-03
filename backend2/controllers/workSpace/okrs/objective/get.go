@@ -8,10 +8,11 @@ import (
 	"PRITRAS/entity"
 )
 
-// type OKRModelExt struct {
-// 	entity.OKR
-// 	OKRManagers 	[]entity.OKRManager
-// }
+type ObjectiveManagerExt struct {
+	entity.Objective
+	ObjectiveManagers 	[]entity.ObjectiveManagerExt
+	KeyResults			[]entity.KeyResult
+}
 
 func GetObjective_OKRId_ROUTER(c *gin.Context) {
 	workSpaceId, _ := strconv.Atoi(c.Param("workSpaceId"))
@@ -24,12 +25,30 @@ func GetObjective_OKRId_ROUTER(c *gin.Context) {
 		return
 	}
 
-	// var returnData []OKRModelExt
+	var returnData []ObjectiveManagerExt
 	var objectives []entity.Objective
 	objectives = entity.GetObjectiveOfOKRId(OKRId)
 
+	for _, row := range objectives {
+		returnData = append(returnData, ObjectiveManagerExt {
+			Objective: entity.Objective {
+				ObjectiveId: 	row.ObjectiveId,
+				OKRId: 			row.OKRId,
+				Title: 			row.Title,
+				WriterUID: 		row.WriterUID,
+				Body: 			row.Body,
+				Status: 		row.Status,
+				StartDate: 		row.StartDate,
+				EndDate: 		row.EndDate,
+				DateAdded: 		row.DateAdded,
+			},
+			ObjectiveManagers: entity.GetObjectiveManagerOfObjectiveId(row.ObjectiveId),
+			KeyResults: entity.GetKeyResultOfObjectiveId(row.ObjectiveId),
+		})
+	}
+
 	c.JSON(200, gin.H {
 		"success": 1,
-		"objectives": objectives,
+		"objectives": returnData,
 	})
 }

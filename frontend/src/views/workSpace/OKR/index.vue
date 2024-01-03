@@ -149,8 +149,10 @@ export default {
                         objectives.map((x) => {
                             x["StartDateView"] = vm.$c.formatDate(new Date(x.StartDate), "date");
                             x["EndDateView"] = vm.$c.formatDate(new Date(x.EndDate), "date");
+                            x["AdditingFlag"] = false;     // listView.vue에서 사용(핵심결과 추가의 flag)
                         });
                         vm.objectives = objectives;
+                        console.log("objectives:", vm.objectives);
                     }
                 }
                 vm.setDataSet();
