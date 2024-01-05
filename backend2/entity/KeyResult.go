@@ -3,6 +3,7 @@ package entity
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"PRITRAS/database"
 )
@@ -62,4 +63,38 @@ func GetKeyResultOfObjectiveId(ObjectiveId int) []KeyResult {
 	defer db.Close()
 
 	return keyResults
+}
+
+func InsertKeyResult(keyResult KeyResult) int64 {
+	db := database.GetConnector()
+	err := db.Ping()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	rows, err := db.Exec(`
+		insert into KeyResults
+		(
+			ObjectiveId, Title, Body, WriterUID, Units, Progress, StartDate, EndDate, DateAdded
+		)
+		values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`, 
+		keyResult.ObjectiveId,
+		keyResult.Title,
+		keyResult.Body,
+		keyResult.WriterUID,
+		keyResult.Units,
+		keyResult.Progress,
+		keyResult.StartDate,
+		keyResult.EndDate,
+		time.Now(),
+	)
+	keyResultId, err := rows.LastInsertId()
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	defer db.Close()
+
+	return keyResultId
 }

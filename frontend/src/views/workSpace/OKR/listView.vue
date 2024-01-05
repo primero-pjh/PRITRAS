@@ -1,7 +1,7 @@
 <template>
-    <div id="listView"  class="bg-white">
+    <div id="listView">
         <div class="w100p">
-            <q-list bordered>
+            <q-list bordered style="border-radius: 15px;" class="bg-grey-4">
                 <template v-for="row, idx in objectives" :key="idx">
                     <q-expansion-item  expand-separator default-opened>
                         <template v-slot:header>
@@ -33,7 +33,7 @@
                                 <div>0%</div>
                             </q-item-section>
                         </template>
-                        <q-card style="border-top: 2px solid #e3e3e3;" >
+                        <q-card style="border-top: 2px solid #e3e3e3; border-radius: 0 0 15px 15px;" >
                             <q-card-section>
                                 <template v-if="row.KeyResults">
                                     <template v-for="kr, kr_idx in row.KeyResults" :key="kr_idx">
@@ -69,7 +69,7 @@
                             </q-card-section>
                         </q-card>
                     </q-expansion-item>
-                    <q-separator />
+                    <q-separator v-if="idx != objectives.length - 1" />
                 </template>
             </q-list>
         </div>
@@ -121,6 +121,7 @@ export default {
         },
         onAdditing(args) {
             let vm = this;
+            vm.clearForm();
             args.AdditingFlag = true;
         },  
         onAddKeyResult(args) {

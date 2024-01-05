@@ -21,6 +21,7 @@ import (
 	objective "PRITRAS/controllers/objective"
 	okr "PRITRAS/controllers/okr"
 	user_workSpace "PRITRAS/controllers/user/workSpace"
+	keyResult "PRITRAS/controllers/keyResult"
 )
 
 var (
@@ -120,6 +121,10 @@ func main() {
 	{
 		v4Api.GET("/:workSpaceId", okr.GetOKR)
 		v4Api.POST("/", okr.InsertOKR)
+	}
+	v5Api := router.Group("/api/keyResult") 
+	{
+		v5Api.PUT("/", keyResult.InsertKeyResult_ROUTER)
 	}
 
 
