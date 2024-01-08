@@ -85,8 +85,8 @@ func InsertKeyResult(keyResult KeyResult) int64 {
 		keyResult.WriterUID,
 		keyResult.Units,
 		keyResult.Progress,
-		keyResult.StartDate,
-		keyResult.EndDate,
+		nil,
+		nil,
 		time.Now(),
 	)
 	keyResultId, err := rows.LastInsertId()

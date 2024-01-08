@@ -2,7 +2,7 @@ package objective
 
 import (
 	"github.com/gin-gonic/gin"
-	// "fmt"
+	"fmt"
 	// "time"
 	"log"
 	// "http"
@@ -15,7 +15,7 @@ type RequestData struct {
 }
 
 func InsertKeyResult_ROUTER(c *gin.Context) {
-	var requestData RequestData
+	var requestData entity.KeyResult
 	var error map[string]string			// 선언
 	error = make(map[string]string)		// 초기화
 	if err := c.BindJSON(&requestData); err != nil { // 바인딩할 떄 required에 빈 값이 드러온 경우.
@@ -26,6 +26,7 @@ func InsertKeyResult_ROUTER(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(requestData)
 	if len(strings.TrimSpace(requestData.Title)) == 0 {
 		error["Title"] = "필수입력 항목입니다."
 	}

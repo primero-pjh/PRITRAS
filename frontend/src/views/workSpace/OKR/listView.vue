@@ -128,9 +128,14 @@ export default {
             let vm = this;
             let form_data = vm.keyResult;
             if(!form_data.Title) { form_data.Title = '새 핵심결과'; }
+            form_data.ObjectiveId = args.ObjectiveId;
+            form_data.WriterUID = vm.$store.state.UID;
             axios.put(`/api/keyResult`, form_data).then((res) => {
                 let data = res.data;
-                console.log("data:", data);
+                if(data.success) {
+                    vm.$c.response_notify("check", "positive", data.message);
+                    vm.$parent.loadData();
+                }
             }).catch((err) => {
                 if(err?.response?.status === 403) {
                     vm.$c.response_notify("error", "negative", err.response?.data.message);
