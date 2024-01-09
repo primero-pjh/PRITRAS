@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>👫 YBR - Couple Application #Prototype</h1>
+    <h1>👫 PRITRAS - 사내 협업 프로젝트 #Prototype</h1>
 </div>
 
 <div align="left">
