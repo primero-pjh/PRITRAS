@@ -95,7 +95,7 @@ export default {
             
             // workSpace: null,
             // members: [],
-            progress1: 0.1,
+            progress1: 0.0,
         }
     },
     methods: {

@@ -14,10 +14,10 @@ import (
 // }
 
 func GetWorkSpace_OKR_OKRId_ROUTER(c *gin.Context) {
-	workSpaceId := c.Param("workSpaceId")
+	workSpaceId, _ := strconv.Atoi(c.Param("workSpaceId"))
 	OKRId, _ := strconv.Atoi(c.Param("OKRId"))
 	
-	if OKRId == 0 || workSpaceId == "0" {
+	if OKRId == 0 || workSpaceId == 0 {
 		c.JSON(403, gin.H {
 			"message": "잘못된 API 요청입니다. 확인 후 다시 시도해주세요.",
 		})

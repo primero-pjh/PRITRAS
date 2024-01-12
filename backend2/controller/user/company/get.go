@@ -1,4 +1,4 @@
-package user
+package controller
 
 import (
 	// "fmt"
@@ -14,7 +14,7 @@ func GetUsers(c *gin.Context) {
 
     appUsers := entity.GetUsers(companyCode)
 
-	c.JSON(200, gin.H {
+	c.JSON(200, gin.H{
 		"success": 1,
 		"appUsers": appUsers,
 	})

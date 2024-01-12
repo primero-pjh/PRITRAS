@@ -5,20 +5,21 @@ import (
 	"log"
 	"time"
 
+		
 	"PRITRAS/database"
 )
 
 type KeyResult struct {
-	KeyResultId			int 	`json:"KeyResultId"`
-	ObjectiveId			int 	`json:"ObjectiveId"`
-	Title 				string 	`json:"Title"`
-	Body 				string 	`json:"Body"`
-	WriterUID 			string 	`json:"WriterUID"`
-	Units 				string 	`json:"Units"`
-	Progress 			int 	`json:"Progress"`
-	StartDate 			string 	`json:"StartDate"`
-	EndDate 			string 	`json:"EndDate"`
-	DateAdded 			string 	`json:"DateAdded"`
+	KeyResultId			int 		`json:"KeyResultId"`
+	ObjectiveId			int 		`json:"ObjectiveId"`
+	Title 				string 		`json:"Title"`
+	Body 				string 		`json:"Body"`
+	WriterUID 			string 		`json:"WriterUID"`
+	Units 				string 		`json:"Units"`
+	Progress 			int 		`json:"Progress"`
+	DateAdded 			*string 	`json:"DateAdded"`
+	StartDate 			*string	`json:"StartDate"`
+	EndDate 			*string	`json:"EndDate"`
 }
 
 func GetKeyResultOfObjectiveId(ObjectiveId int) []KeyResult {
@@ -33,6 +34,7 @@ func GetKeyResultOfObjectiveId(ObjectiveId int) []KeyResult {
             kr.*
 		from KeyResults as kr
 		where kr.ObjectiveId = ?
+		order by kr.KeyResultId asc
 	`, ObjectiveId)
 	if err != nil {
 		log.Fatal(err)

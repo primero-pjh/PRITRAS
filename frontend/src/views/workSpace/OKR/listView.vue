@@ -37,16 +37,18 @@
                             <q-card-section>
                                 <template v-if="row.KeyResults">
                                     <template v-for="kr, kr_idx in row.KeyResults" :key="kr_idx">
-                                        <q-bar class="bg-grey-4 text-black" 
+                                        <q-bar class="bg-grey-4 text-black q-mb-sm" 
                                             style="height: 52px; border-radius: 15px;">
-                                            <div class="faSB text-body1 text-bold">핵심결과 1</div>
+                                            <div class="faSB text-body1 text-bold">{{ kr.Title }}</div>
+                                            <q-space />
+                                            <div class="faSB text-body1">{{ kr.Progress }}%</div>
                                         </q-bar>
                                     </template>
                                 </template>
                                 <q-bar class="bg-white text-black" >
                                     <div v-if="!row.AdditingFlag">
                                         <q-btn label="핵심결과 추가" outline class="faSB" icon="add" 
-                                            @click="onAdditing(row)"/>
+                                            @click="onAdditing(row)" />
                                     </div>
                                     <div v-else style="width: 100%;">
                                         <div style="width: 100%;">

@@ -4,15 +4,15 @@
             class="q-pa-md shadow-2 bg-white">
             <div class="q-mr-md">
                 <q-btn-group>
-                    <q-btn dense style="width: 50px;" label="월" 
+                    <q-btn dense style="width: 50px;" label="월" class="faSB"
                         :color="(view_type=='month')?'primary':'white'"
                         :text-color="(view_type=='month')?'white':'black'" 
                         @click="changeViewType('month')" />
-                    <q-btn dense style="width: 50px;" label="주" 
+                    <q-btn dense style="width: 50px;" label="주" class="faSB"
                         :color="(view_type=='week')?'primary':''" 
                         :text-color="(view_type=='week')?'white':'black'" 
                         @click="changeViewType('week')" />
-                    <q-btn dense style="width: 50px;" label="일" 
+                    <q-btn dense style="width: 50px;" label="일" class="faSB"
                         :color="(view_type=='day')?'primary':''" 
                         :text-color="(view_type=='day')?'white':'black'" 
                         @click="changeViewType('day')" />
@@ -23,13 +23,13 @@
                     <q-btn dense icon="chevron_left" outline @click="move_date(-1)" />
                 </div>
                 <div class="q-mr-md">
-                    <div class="faB ft24 q-px-md">{{ standard_date }}</div>
+                    <div class="faSB text-h5 q-px-md">{{ standard_date }}</div>
                 </div>
                 <div class="q-mr-md">
                     <q-btn dense icon="chevron_right" outline @click="move_date(1)" />
                 </div>
                 <div>
-                    <q-btn dense label="오늘" outline color="primary" class="fkR" 
+                    <q-btn dense label="오늘" outline color="primary" class="faSB" 
                         style="width: 50px;"
                         @click="move_date(0)" />
                 </div>
