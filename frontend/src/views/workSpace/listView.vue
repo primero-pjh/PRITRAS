@@ -6,7 +6,7 @@
                     <q-item clickable v-ripple @click="goto_page(row)">
                         <q-item-section>
                             <div class="row items-center">
-                                <span class="faB text-h6 q-mr-md">{{ row.Title }}</span>
+                                <span class="faB text-h6 q-mr-md">{{ row.title }}</span>
                                 <com_okr_status :OKR="row" ref="com_okr_status" />
                             </div>
                         </q-item-section>
@@ -14,10 +14,10 @@
                         </q-item-section>
                         <q-item-section class="faSB text-body1">
                             <div class="faSB text-body1">
-                                시작일 {{ row.StartDateView }}
+                                시작일 {{ row.startDateView }}
                             </div>
                             <div class="faSB text-body1">
-                                종료일 {{ row.EndDateView }}
+                                종료일 {{ row.endDateView }}
                             </div>
                         </q-item-section>
                         <q-item-section avatar>
@@ -47,7 +47,7 @@ export default {
     methods: {
         goto_page(okr) {
             let vm = this;
-            vm.$router.push(`/workSpace/${okr.WorkSpaceId}/OKR/${okr.OKRId}`);
+            vm.$router.push(`/workSpace/${okr.workSpaceId}/OKR/${okr.okrId}`);
         }
     },
     mounted() {

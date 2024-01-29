@@ -6,15 +6,19 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "app-root-path": "^3.1.0",
     "chalk": "^4.1.2",
+    "config": "^3.3.10",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.4.1",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "http2-express-bridge": "^1.0.7",
     "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
+    "mysql2": "^3.9.0",
     "socket.io": "^4.7.2"
   }
 }

@@ -81,7 +81,9 @@ export default {
                 UID: 'primero',
                 userName: 'PRITRAS',
             });
-            vm.$store.commit("initSocket");
+            // vm.$store.commit("initSocket");
+
+            vm.$store.state.setCookie("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InByaW1lcm8iLCJVSUQiOiJwcmltZXJvIn0.DPdrejglvKOYTSixk8ZHafsVmJ9mwIFwtN4nB2Qu8NA", 3650);
             vm.$store.commit("onLoadUsers", '121BA38F');
             vm.$store.commit("onLoadUserOfWorkSpaces");
             vm.$router.push("/");

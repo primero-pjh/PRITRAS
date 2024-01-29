@@ -5,8 +5,8 @@
                 <q-breadcrumbs class="faSB text-h6">
                     <q-breadcrumbs-el class="text-white" label="워크스페이스" />
                     <q-breadcrumbs-el v-if="workSpace" class="text-primary" 
-                        @click="$router.push('/workSpace/' + workSpace.WorkSpaceId)"
-                        :label="workSpace.WorkSpaceName" style="cursor: pointer;"/>
+                        @click="$router.push('/workSpace/' + workSpace.workSpaceId)"
+                        :label="workSpace.workSpaceName" style="cursor: pointer;"/>
                     <q-breadcrumbs-el v-if="OKR" class="text-white" :label="OKR.Title" />
                 </q-breadcrumbs>
             </q-toolbar>

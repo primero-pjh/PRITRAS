@@ -88,12 +88,12 @@ export default {
             axios.get(`/api/okr/${workSpaceId}`, {
 
             }).then((res) => {
-                let data = res.data;
-                if(data.success) {
-                    let okrs = data.okrs;
+                let response = res.data;
+                if(response.status === 200) {
+                    let okrs = response.data;
                     okrs.map((x) => {
-                        x["StartDateView"] = vm.$c.formatDate(new Date(x.StartDate), "date");
-                        x["EndDateView"] = vm.$c.formatDate(new Date(x.EndDate), "date");
+                        x["startDateView"] = vm.$c.formatDate(new Date(x.startDate), "date");
+                        x["endDateView"] = vm.$c.formatDate(new Date(x.endDate), "date");
                     });
                     vm.okrs = okrs;
 

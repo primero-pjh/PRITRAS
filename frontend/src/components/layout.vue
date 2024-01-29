@@ -68,9 +68,9 @@
                                 </div>
                             </q-item-label>
                             <template v-for="ws, ws_i in workSpaces" :key="ws_i">
-                                <q-item clickable v-ripple @click="goto_workSpace(ws.WorkSpaceId)">
+                                <q-item clickable v-ripple @click="goto_workSpace(ws.workSpaceId)">
                                     <q-item-section class="faSB ft16">
-                                        <q-item-label>{{ ws.WorkSpaceName }}</q-item-label>
+                                        <q-item-label>{{ ws.workSpaceName }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
                             </template>

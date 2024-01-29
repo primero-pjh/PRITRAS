@@ -6,7 +6,7 @@ import { useI18n } from "vue-i18n";
 
 // state, getters, mutations, actions, modules
 const store = createStore({
-    state : {
+    state: {
         socket: null,
         UID: '',
         appUser: {
@@ -19,29 +19,29 @@ const store = createStore({
         isMobile: /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent),
         drawerLeft: true,
         drawerRight: false,
-        
+
         appUsers: [],
         workSpaces: [],
 
         /* useful function */
         getCookie: function (name) {
             let value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-            return value? value[2] : null;
+            return value ? value[2] : null;
         },
         setCookie: function (name, value, exp) {
             let date = new Date();
-            date.setTime(date.getTime() + exp*24*60*60*1000);
+            date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
             document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
         },
-        setError: function(obj, err) {
-            for(let key in err) {
-                if(Object.prototype.hasOwnProperty.call(obj, key)) { 
+        setError: function (obj, err) {
+            for (let key in err) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) {
                     obj[key] = err[key];
                 }
             }
         },
-        clearError: function(obj) {
-            for(let key in obj) {
+        clearError: function (obj) {
+            for (let key in obj) {
                 obj[key] = "";
             }
         },
@@ -51,21 +51,21 @@ const store = createStore({
             month = month >= 10 ? month : `0${month}`;
             let day = date.getDate();
             day = day >= 10 ? day : `0${day}`;
-        
+
             let hours = date.getHours();
             hours = hours >= 10 ? hours : `0${hours}`;
             let min = date.getMinutes();
             min = min >= 10 ? min : `0${min}`;
             let sec = date.getSeconds();
             sec = sec >= 10 ? sec : `0${sec}`;
-            if(type == 'date') {
-                return `${date.getFullYear()}-${month}-${day}`; 
+            if (type == 'date') {
+                return `${date.getFullYear()}-${month}-${day}`;
             } else if (type == 'date_ko') {
-                return `${date.getFullYear()}년 ${month}월 ${day}일`; 
+                return `${date.getFullYear()}년 ${month}월 ${day}일`;
             } else if (type == 'date_2') {
-                return `${month}.${day}`; 
+                return `${month}.${day}`;
             } else {
-                return `${date.getFullYear()}-${month}-${day} ${hours}:${min}:${sec}`; 
+                return `${date.getFullYear()}-${month}-${day} ${hours}:${min}:${sec}`;
             }
         }
     },
@@ -111,7 +111,7 @@ const store = createStore({
         },
 
         setAppUser(state, appUser) {
-            if(appUser) {
+            if (appUser) {
                 state.UID = appUser.UID;
                 state.appUser.UID = appUser.UID;
                 state.appUser.userId = appUser.userId;
@@ -125,12 +125,12 @@ const store = createStore({
         },
 
         onLoadUsers(state, companyCode) {
-            axios.get(`/api/user/company/${companyCode}`, {
+            axios.get(`/api/company/${companyCode}/users`, {
 
             }).then((res) => {
-                let data = res.data;
-                if(data.success) {
-                    let row = data.appUsers;
+                let response = res.data;
+                if (response.status === 200) {
+                    let row = response.data;
                     state.appUsers = row;
                 }
             }).catch((err) => {
@@ -140,11 +140,11 @@ const store = createStore({
         onLoadUserOfWorkSpaces(state) {
             const UID = state.UID;
             axios.get(`/api/user/${UID}/workSpaces`, {
-                
+
             }).then((res) => {
-                let data = res.data;
-                if(data.success) {
-                    let row = data.workSpaces;
+                let response = res.data;
+                if (response.status === 200) {
+                    let row = response.data;
                     state.workSpaces = row;
                 }
             }).catch((err) => {
