@@ -77,9 +77,11 @@ export default {
     methods: {
         onLogin() {
             let vm = this;
-            vm.$store.commit("setAppUser", {
-                UID: 'primero',
-                userName: 'PRITRAS',
+            vm.$store.commit("setAccount", {
+                uid: 'primero',
+                company_code: '121BA38F',
+                user_id: 'primero',
+                user_name: '박재현',
             });
             // vm.$store.commit("initSocket");
 

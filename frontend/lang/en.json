@@ -1,4 +1,7 @@
 {
+    "form": {
+        "require": "Field is required."
+    },
     "logout": "logout",
     "languages": {
         "korean": "korean",

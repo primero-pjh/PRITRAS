@@ -3,12 +3,21 @@ const path = appRoot.path;
 const DB = require(`${path}/db/pritras.db`);
 
 class OKRRepository {
-	getAllOfWorkSpaceId = async (workSpaceId) => {
+	selectOneOkr = async (okr_id) => {
 		let [rows, fields] = await DB.query(`
 			SELECT *
-			FROM OKR as okr
-			WHERE okr.workSpaceId = ?
-		`, [workSpaceId]);
+			FROM okr
+			WHERE okr_id = ?
+		`, [okr_id]);
+		return rows[0];
+	}
+
+	getAllOfWorkSpaceId = async (work_space_id) => {
+		let [rows, fields] = await DB.query(`
+			SELECT *
+			FROM okr
+			WHERE work_space_id = ?
+		`, [work_space_id]);
 		return rows;
 	}
 }

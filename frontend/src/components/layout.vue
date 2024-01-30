@@ -63,14 +63,17 @@
                                     <q-space />
                                     <div>
                                         <q-btn icon="add" flat dense size="sm"
-                                            @click="$router.push('/setting/workSpace/0')" />
+                                            @click="$router.push('/setting/work-space/0')" />
                                     </div>
                                 </div>
                             </q-item-label>
-                            <template v-for="ws, ws_i in workSpaces" :key="ws_i">
-                                <q-item clickable v-ripple @click="goto_workSpace(ws.workSpaceId)">
+                            <template v-for="ws, ws_i in work_spaces" :key="ws_i">
+                                <q-item clickable v-ripple @click="goto_workSpace(ws.work_space_id)">
                                     <q-item-section class="faSB ft16">
-                                        <q-item-label>{{ ws.workSpaceName }}</q-item-label>
+                                        <q-item-label>{{ ws.work_space_name }}</q-item-label>
+                                    </q-item-section>
+                                    <q-item-section side v-if="$route.params?.work_space_id == ws.work_space_id">
+                                        <q-icon name="check" color="positive" />
                                     </q-item-section>
                                 </q-item>
                             </template>
@@ -87,7 +90,8 @@
                                 <q-item clickable v-ripple>
                                     <q-item-section side>
                                         <q-avatar rounded size="30px" style="display: flex;">
-                                            <q-img src="https://cdn.quasar.dev/img/boy-avatar.png" style="border-radius: 15px;" />
+                                            <q-img src="https://cdn.quasar.dev/img/boy-avatar.png" 
+                                                style="border-radius: 15px;" />
                                             <q-badge floating rounded color="negative"></q-badge>
                                         </q-avatar>
                                     </q-item-section>
@@ -171,6 +175,7 @@
 </template>
 
 <script>
+
 export default {
     name: 'layoutVue',
     data() {
@@ -185,8 +190,8 @@ export default {
         drawerRight() { return this.$store.state.drawerRight; },
         isHeaderShow() { return this.$store.state.isHeaderShow; },
 
-        workSpaces() {
-            return this.$store.state.workSpaces;
+        work_spaces() {
+            return this.$store.state.work_spaces;
         }
     },
     methods: {
@@ -224,11 +229,10 @@ export default {
             let vm = this;
             vm.$router.push('login');
         },
-        goto_workSpace(WorkSpaceId) {
+        goto_workSpace(work_space_id) {
             let vm = this;
-            console.log("WorkSpaceId:", WorkSpaceId);
             // window.location.href = '/#/workSpace/' + WorkSpaceId;
-            vm.$router.push(`/workSpace/${WorkSpaceId}`);
+            vm.$router.push(`/work-space/${work_space_id}`);
         },
 
         onLogout() {
@@ -239,7 +243,6 @@ export default {
     },
     mounted() {
         let vm = this;
-        console.log("route:", );
     }
 }
 </script>

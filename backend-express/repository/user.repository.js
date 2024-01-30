@@ -8,8 +8,8 @@ class UserRepository {
 	findAllOfCompanyCode = async (companyCode) => {
 		let [rows, fields] = await DB.query(`
 			select *
-			from appUsers as u
-			where u.companyCode=?
+			from account as u
+			where u.company_code = ?
 		`, [companyCode]);
 
 		return rows;

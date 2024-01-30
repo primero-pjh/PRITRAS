@@ -13,7 +13,7 @@
 <script>
 import layout from "@/components/layout.vue";
 import dialog_objective_modify_form from "@/components/objective/dialog_objective_modify_form.vue";
-import dialog_new_okr_form from "@/components/OKR/dialog_new_okr_form.vue";
+import dialog_new_okr_form from "@/components/okr/dialog_new_okr_form.vue";
 
 export default {
     name: 'App',

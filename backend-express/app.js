@@ -35,10 +35,10 @@ app.use(async (req, res, next) => {
     }
 });
 
-app.use('/', require(`./controller/company/user/get.controller`));
-app.use('/', require(`./controller/user/workSpace/get.controller`));
-app.use('/', require(`./controller/okr/get.controller`));
-// app.use('/api', indexRouter);
+// app.use('/', require(`./controller/company/user/get.controller`));
+// app.use('/', require(`./controller/user/workSpace/get.controller`));
+// app.use('/', require(`./controller/okr/get.controller`));
+app.use('/', require(`./routes/index.router`));
 
 // // catch 404 and forward to error handler
 // app.use((req, res, next) => {

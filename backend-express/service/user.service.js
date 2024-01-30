@@ -6,9 +6,9 @@ class UserService {
 	constructor() {
 	}
 	userRepository = new UserRepository();
-	findAllOfCompanyCode = async (companyCode) => {
+	findAllOfCompanyCode = async (company_code) => {
 		// 저장소(Repository)에게 데이터를 요청합니다.
-		let data = await this.userRepository.findAllOfCompanyCode(companyCode);
+		let data = await this.userRepository.findAllOfCompanyCode(company_code);
 		return data;
 	}
 }

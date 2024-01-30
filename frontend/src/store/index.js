@@ -8,10 +8,12 @@ import { useI18n } from "vue-i18n";
 const store = createStore({
     state: {
         socket: null,
-        UID: '',
-        appUser: {
-            UID: '',
-            userId: '',
+        uid: '',
+        account: {
+            uid: '',
+            user_id: '',
+            user_name: '',
+            company_code: '',
         },
         isLogged: false,
         host: '',
@@ -20,8 +22,8 @@ const store = createStore({
         drawerLeft: true,
         drawerRight: false,
 
-        appUsers: [],
-        workSpaces: [],
+        company_members: [],
+        work_spaces: [],
 
         /* useful function */
         getCookie: function (name) {
@@ -110,42 +112,44 @@ const store = createStore({
             state.isHeaderShow = data;
         },
 
-        setAppUser(state, appUser) {
-            if (appUser) {
-                state.UID = appUser.UID;
-                state.appUser.UID = appUser.UID;
-                state.appUser.userId = appUser.userId;
+        setAccount(state, account) {
+            if (account) {
+                state.account.uid = account.uid;
+                state.account.user_id = account.user_id;
+                state.account.user_name = account.user_name;
+                state.account.company_code = account.company_code;
                 state.isLogged = true;
             } else {
-                state.UID = "";
-                state.appUser.UID = "";
-                state.appUser.userId = "";
+                state.account.uid = "";
+                state.account.user_id = "";
+                state.account.user_name = "";
+                state.account.company_code = "";
                 state.isLogged = false;
             }
         },
 
-        onLoadUsers(state, companyCode) {
-            axios.get(`/api/company/${companyCode}/users`, {
+        onLoadUsers(state, company_code) {
+            axios.get(`/api/user/company/${company_code}`, {
 
             }).then((res) => {
                 let response = res.data;
                 if (response.status === 200) {
-                    let row = response.data;
-                    state.appUsers = row;
+                    let company_members = response.data;
+                    state.company_members = company_members;
                 }
             }).catch((err) => {
                 console.error('err:', err);
             });
         },
         onLoadUserOfWorkSpaces(state) {
-            const UID = state.UID;
-            axios.get(`/api/user/${UID}/workSpaces`, {
+            const uid = state.account.uid;
+            axios.get(`/api/work-space/user/${uid}`, {
 
             }).then((res) => {
                 let response = res.data;
                 if (response.status === 200) {
                     let row = response.data;
-                    state.workSpaces = row;
+                    state.work_spaces = row;
                 }
             }).catch((err) => {
                 console.error('err:', err);

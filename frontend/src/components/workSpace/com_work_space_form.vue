@@ -2,9 +2,11 @@
     <div id="com_work_space_form">
         <div v-if="mode === 'add'">
             <q-input label="워크스페이스 명" dense filled class="faSB" 
-                v-model="workSpace.WorkSpaceName"
-                :hint="'50자 이내로 작성해주세요.' + '(' + workSpace.WorkSpaceName.length + '/50)'" 
-                :error="formError.WorkSpaceName?true:false" :error-message="formError.WorkSpaceName" />
+                v-model="work_space.work_space_name"
+                :hint="'50자 이내로 작성해주세요.' + '(' + work_space.work_space_name.length + '/50)'" 
+                :error="formError.work_space?.work_space_name?true:false" :error-message="formError.work_space?.work_space_name" 
+                
+                />
         </div> 
     </div>
 </template>
@@ -14,32 +16,43 @@ export default {
     name: 'com_work_space_form',
     data() {
         return {
-            workSpace: {
-                WorkSpaceId: 0,
-                WorkSpaceName: "",
-                Owner: "",
-                OwnerUID: "",
+            work_space: {
+                work_space_id: 0,
+                work_space_name: "",
+                company_code: "",
+                photo: "",
+                owner: "",
+                owner_uid: "",
             },
             formError: {
-                WorkSpaceName: "",
+                work_space: {},
             }
         }
     },
     props: ['mode'],
     methods: {
+        validation() {
+            let vm = this;
+            if(!vm.work_space.work_space_name) {
+                vm.formError.work_space.work_space_name = vm.$t('form.require');
+                return false;
+            }
+            if(vm.work_space.work_space_name.length > 50) {
+                vm.formError.work_space.work_space_name = "50자 이내로 작성해주세요.";
+                return false;
+            }
+            return true;
+        },
         getForm() {
-            return this.workSpace;
+            return this.work_space;
         },
         clearError() {
             let vm = this;
-            vm.formError.WorkSpaceName = "";
+            vm.formError.work_space = new Object();
         },
-        setError(error) {
+        setError(errors) {
             let vm = this;
-            vm.formError.WorkSpaceName = error?.WorkSpaceName;
-        },
-        onHandleAdd() {
-            
+            window.$c.form.setError(vm.formError, errors);
         },
     },
     mounted() {

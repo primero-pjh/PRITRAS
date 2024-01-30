@@ -1,13 +1,13 @@
 {
+    "form": {
+        "require": "필수입력 항목입니다."
+    },
     "logout": "로그아웃",
     "languages": {
         "korean": "한국어",
         "english": "영어"
     },
     "routers": {
-        "home": "홈화면",
-        "home": "홈화면",
-        "home": "홈화면",
         "home": "홈화면"
     },
     "header":{
