@@ -1,71 +1,54 @@
 <template>
-    <div id="calendarVue" class="shadow-2" style="margin: -16px;">
-        <div class="row items-center q-pa-md bg-white w100p">
-            <div class="q-mr-md">
-                <q-btn-group>
-                    <q-btn dense style="width: 50px;" label="월" class="faSB"
-                        :color="(view_type=='month')?'primary':'white'"
-                        :text-color="(view_type=='month')?'white':'black'" 
-                        @click="changeViewType('month')" />
-                    <q-btn dense style="width: 50px;" label="주" class="faSB"
-                        :color="(view_type=='week')?'primary':''" 
-                        :text-color="(view_type=='week')?'white':'black'" 
-                        @click="changeViewType('week')" />
-                    <q-btn dense style="width: 50px;" label="일" class="faSB"
-                        :color="(view_type=='day')?'primary':''" 
-                        :text-color="(view_type=='day')?'white':'black'" 
-                        @click="changeViewType('day')" />
-                </q-btn-group>
-            </div>
-            <div class="row">
-                <div class="q-mr-md">
-                    <q-btn dense icon="chevron_left" outline @click="move_date(-1)" />
-                </div>
-                <div class="q-mr-md">
-                    <div class="faSB text-h5 q-px-md">{{ standard_date }}</div>
-                </div>
-                <div class="q-mr-md">
-                    <q-btn dense icon="chevron_right" outline @click="move_date(1)" />
-                </div>
-                <div>
-                    <q-btn dense label="오늘" outline color="primary" class="faSB" 
-                        style="width: 50px;"
-                        @click="move_date(0)" />
-                </div>
-            </div>
-            <q-space />
-            <div>
-                <q-btn icon="filter_alt" color="black" dense outline><q-tooltip>캘린더 필터</q-tooltip></q-btn>
-            </div>
-        </div>
-        <!-- <q-separator></q-separator> -->
-
-        <div class="bg-white">
-            <div id="calendar" style="height: 600px; border: 1px solid #eee;"></div>
+    <div id="com_calendar_filter" style="height: 100%;" class="shadow-2 bg-white">
+        <div class="row q-py-sm q-px-md">
+            <div><span>캘린더 필터</span></div>
+            <q-space></q-space>
+            <q-btn icon="add" color="positive" dense flat>
+                <q-menu>
+                    <div class="q-pa-md">
+                        <div>
+                            <q-input dense label="카테고리" outlined
+                                v-model="classification.title"
+                                :error="formError.title?true:false"
+                                :error-message="formError.title" />
+                        </div>
+                        <div>
+                            <q-color v-model="classification.color" />
+                        </div>
+                    </div>
+                    <q-separator></q-separator>
+                    <div style="display: flex; justify-content: end;" class="q-pa-sm">
+                        <q-btn label="추가" outline color="positive" 
+                            @click="onAddClassification" v-close-popup />
+                    </div>
+                </q-menu>
+            </q-btn>
         </div>
     </div>
-    <com_calendar_filter ref="com_calendar_filter"></com_calendar_filter>
 </template>
 
 <script>
-
 import axios from "axios";
 import Calendar from '@toast-ui/calendar';
-import com_calendar_filter from '@/components/calendar/filter.com';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
+
 export default {
-    name: 'calendarVue',
+    name: 'com_calendar_filter',
     components: {
-        com_calendar_filter
     },
     computed: {
+        classification_list() {
+            return this.$store.state.classification_list;
+        },
+        classification_dict() {
+            return this.$store.state.classification_dict;
+        },
+        classification_id_dict() {
+            return this.$store.state.classification_id_dict;
+        },
     },
     data() {
         return {
-            options:  {
-            title: 'Current count: 0',
-            class: 'modern',
-            },
             view_type: 'month', 
             standard_date: '',
             is_check: false,
@@ -343,8 +326,6 @@ export default {
                 vm.loadSchedule(id);
             }
         }
-
-        console.log("com_calendar_filter:", vm.$refs.com_calendar_filter);
     },
 }
 </script>

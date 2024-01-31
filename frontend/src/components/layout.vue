@@ -49,7 +49,7 @@
                                 <q-item-label>개별 캘린더</q-item-label>
                             </q-item-section>
                         </q-item>
-                        <q-item clickable v-ripple @click="goto_okr" v-if="$store.state.isLogged">
+                        <q-item clickable v-ripple v-if="$store.state.isLogged">
                             <q-item-section class="faSB ft16">
                                 <q-item-label>개별 OKR</q-item-label>
                             </q-item-section>

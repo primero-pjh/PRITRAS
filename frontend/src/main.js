@@ -7,6 +7,8 @@ import { Quasar, Loading, Notify, Dialog } from 'quasar'
 import '@quasar/extras/material-icons/material-icons.css'
 import 'quasar/dist/quasar.css'
 import '@/assets/css/common.css'
+import VueDraggableResizable from 'vue-draggable-resizable'
+import "vue-draggable-resizable/style.css";
 
 
 import { createI18n } from 'vue-i18n'
@@ -50,5 +52,6 @@ app.use(router);
 
 import header_dialog from "@/components/header.dialog.vue"
 app.component("header-dialog", header_dialog);
-
+app.component("vue-draggable-resizable", VueDraggableResizable)
+// app.component("VueWinBox", VueWinBox);
 app.mount('#app');
