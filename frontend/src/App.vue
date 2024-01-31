@@ -5,15 +5,15 @@
                 <router-view />
             </template>
         </layout>
-        <dialog_objective_modify_form ref="dialog_objective_modify_form" />
-        <dialog_new_okr_form ref="dialog_new_okr_form" />
+        <dialog_objective ref="dialog_objective" />
+        <dialog_okr ref="dialog_okr" />
     </div>
 </template>
 
 <script>
 import layout from "@/components/layout.vue";
-import dialog_objective_modify_form from "@/components/objective/dialog_objective_modify_form.vue";
-import dialog_new_okr_form from "@/components/okr/dialog_new_okr_form.vue";
+import dialog_objective from "@/components/objective/dialog.objective.vue";
+import dialog_okr from "@/components/okr/dialog.okr.vue";
 
 export default {
     name: 'App',
@@ -21,8 +21,8 @@ export default {
     },
     components: {
         layout,
-        dialog_objective_modify_form,
-        dialog_new_okr_form,
+        dialog_objective,
+        dialog_okr,
     },
     data() {
         return {

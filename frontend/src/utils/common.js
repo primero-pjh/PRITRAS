@@ -2,6 +2,15 @@ import { Notify, Dialog } from 'quasar'
 import dayjs from "dayjs"
 export const $c = {
 	form: {
+		clearError(errors) {
+			for (var k in errors) {
+				if (typeof (errors[k]) === 'object') {
+					this.clearError(errors[k]);
+				} else {
+					errors[k] = "";
+				}
+			}
+		},
 		setError(form, errors) {
 			errors.map((err) => {
 				let location = err?.location;
@@ -10,9 +19,6 @@ export const $c = {
 				let type = err?.type;
 
 				let p_list = path.split('.');
-				let field = "";
-
-				let newFormError = new Object();
 
 				let keys = form;
 				for (let i = 0; i < p_list.length; i++) {
@@ -23,7 +29,7 @@ export const $c = {
 							keys[p_list[i]] = msg;
 						}
 					} else {
-						keys = keys[p_list[i]];
+						keys[p_list[i]] = new Object();
 					}
 				}
 			});

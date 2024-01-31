@@ -23,6 +23,17 @@ class ObjectiveService {
 
 		return objectives;
 	}
+
+	addObjective = async (objective, objective_managers) => {
+		let objective_id = await this.objectiveRepository.insertObjective(objective);
+
+		for (let i = 0; i < objective_managers.length; i++) {
+			let x = objective_managers[i];
+			await this.objectiveManagerRepository.insertObjectiveManager(objective_id, x);
+		}
+
+		return objective_id;
+	}
 }
 
 module.exports = ObjectiveService;

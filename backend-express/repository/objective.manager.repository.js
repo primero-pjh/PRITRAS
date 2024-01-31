@@ -13,6 +13,24 @@ class ObjectiveManagerRepository {
 		`, [objective_id]);
 		return rows;
 	}
+
+	// objective-manager 생성
+	insertObjectiveManager = async (objective_id, objective_manager) => {
+		let [row, fields] = await DB.query(`
+			INSERT INTO objective_manager (
+				objective_id, 
+				manager_uid,
+				date_added
+			) VALUES (
+				?, ?, ?
+			)
+		`, [
+			objective_id,
+			objective_manager.uid,
+			new Date(),
+		]);
+		return row.insertId;
+	}
 }
 
 module.exports = ObjectiveManagerRepository;

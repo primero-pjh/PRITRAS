@@ -69,7 +69,10 @@ export default {
         },
         onAddOkr() {
             let vm = this;
-            vm.$root.$refs.dialog_new_okr_form.open('add', 0, () => {
+            vm.$root.$refs.dialog_okr.open({
+                mode: 'add',
+                work_space_id: vm.work_space_id,
+            }, () => {
                 vm.loadOKR(vm.work_space_id);
             });
         },

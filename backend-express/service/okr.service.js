@@ -15,8 +15,13 @@ class OKRService {
 
 	findAllOfWorkSpaceId = async (work_space_id) => {
 		// 저장소(Repository)에게 데이터를 요청합니다.
-		let data = await this.okrRepository.getAllOfWorkSpaceId(work_space_id);
+		let data = await this.okrRepository.selectAllOfWorkSpaceId(work_space_id);
 		return data;
+	}
+
+	addOKR = async (okr) => {
+		let okr_id = await this.okrRepository.insertWorkSpace(okr);
+		return okr_id;
 	}
 }
 

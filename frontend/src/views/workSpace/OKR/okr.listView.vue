@@ -89,19 +89,17 @@ export default {
     },
     data() {
         return {
-            keyResult: {
-                ObjectiveId: 0,
-                Title: '',
-                Body: '',
-                WriterUID: '',
-                Units: '',
-                Progress: 0,
-                StartDate: '',
-                EndDate: '',
+            key_result: {
+                objective_id: 0,
+                title: '',
+                body: '',
+                writer_uid: '',
+                units: '',
+                progress: 0,
+                start_date: '',
+                end_date: '',
             },
-            formError: {
-                Title: '',
-            },
+            formError: {},
         }
     },
     methods: {
@@ -110,15 +108,15 @@ export default {
             vm.$router.push(`/work-space/${okr.work_space_id}/OKR/${okr.okr_id}`);
         },
         clearForm() {
-            this.keyResult = {
-                ObjectiveId: 0,
-                Title: '',
-                Body: '',
-                WriterUID: '',
-                Units: '',
-                Progress: 0,
-                StartDate: '',
-                EndDate: '',
+            this.key_result = {
+                objective_id: 0,
+                title: '',
+                body: '',
+                writer_uid: '',
+                units: '',
+                progress: 0,
+                start_date: '',
+                end_date: '',
             };
         },
         onAdditing(args) {
@@ -128,30 +126,36 @@ export default {
         },  
         onAddKeyResult(args) {
             let vm = this;
-            let form_data = vm.keyResult;
-            if(!form_data.Title) { form_data.Title = '새 핵심결과'; }
-            form_data.ObjectiveId = args.ObjectiveId;
-            form_data.WriterUID = vm.$store.state.UID;
-            axios.put(`/api/keyResult`, form_data).then((res) => {
-                let data = res.data;
-                if(data.success) {
-                    vm.$c.response_notify("check", "positive", data.message);
-                    vm.$parent.loadData();
+            let form_data = vm.key_result;
+            if(!form_data.title) { form_data.title = '새 핵심결과'; }
+            form_data.objective_id = args.objective_id;
+            form_data.writer_uid = vm.$store.state.account.uid;
+
+            let work_space_id = vm.$route.params['work_space_id'];
+            let okr_id = vm.$route.params['okr_id'];
+
+            axios.post(`/api/key-result`, {
+                key_result: form_data,
+                key_result_managers: [],
+            }).then((res) => {
+                let response = res.data;
+                if(response.status === 200) {
+                    window.$c.response_notify("check", "positive", response.message);
+                    vm.$emit("loadData", work_space_id, okr_id);
                 }
             }).catch((err) => {
-                if(err?.response?.status === 403) {
-                    vm.$c.response_notify("error", "negative", err.response?.data.message);
-                }
-                if(err?.response?.status === 404) {
-                    vm.$c.response_notify("error", "negative", err?.message);
-                }
                 vm.$q.loading.hide();
+                if(err?.response?.status === 400) {
+                    let errors = err.response?.data?.data?.errors;
+                    window.$c.form.setError(vm.formError, errors);
+                }
             });
             args.AdditingFlag = false;
         },
     },
     mounted() {
         let vm = this;
+        
     },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div id="dialog_objective_modify_form">
+    <div id="dialog_objective">
         <q-dialog v-model="isOpen" position="right" full-height>
             <q-card style="width: 600px;" class="column full-height">
                 <q-card-section>
@@ -16,13 +16,13 @@
                     <div style="height: 100%;">
                         <q-scroll-area style="height: 100%; max-width: 100%;" class="q-px-md">
                             <div class="text-h6 faSB text-negative">제목*</div>
-                            <q-input label="제목(목표)" class="faSB" filled dense v-model="form.Title" clearable
-                                :error="formError.Title?true:false" :error-message="formError.Title"
+                            <q-input label="제목(목표)" class="faSB" filled dense v-model="form.title" clearable
+                                :error="formError.title?true:false" :error-message="formError.title"
                                 hint="팀의 목표를 가시화하고 공동의 성과를 투명하고 정확하게 측정하세요."
                                 />
                             <div class="text-h6 faSB">담당자</div>
                             <q-select
-                                filled v-model="managers" :options="appUsers"
+                                filled v-model="managers" :options="company_members"
                                 label="담당자" dense class="faSB"
                                 options-selected-class="text-deep-orange" multiple
                                 :error="formError.managers?true:false" :error-message="formError.managers" >
@@ -32,21 +32,21 @@
                                             <q-avatar>
                                                 <q-img :src="$store.state.host + manager.Photo" />
                                             </q-avatar>
-                                            <span class="faSB text-bold">{{ manager.UserName }}</span>
+                                            <span class="faSB text-bold">{{ manager.user_name }}</span>
                                         </q-chip>
                                     </template>
                                 </template>
                                 <template v-slot:option="scope">
                                     <q-item v-bind="scope.itemProps">
                                         <q-item-section avatar>
-                                            <q-img style="width: 40px; height: 40px;" :src="$store.state.host + scope.opt.Photo" 
+                                            <q-img style="width: 40px; height: 40px;" :src="$store.state.host + scope.opt.photo" 
                                                 fit="cover"/>
                                         </q-item-section>
                                         <q-item-section>
                                             <q-item-label class="faSB">
-                                                {{ scope.opt.UserName }}
+                                                {{ scope.opt.user_name }}
                                             </q-item-label>
-                                            <q-item-label caption>{{ scope.opt.PhoneNumber }}</q-item-label>
+                                            <q-item-label caption>{{ scope.opt.phone_number }}</q-item-label>
                                         </q-item-section>
                                     </q-item>
                                 </template>
@@ -59,20 +59,20 @@
                             <div class="text-h6 faSB text-negative">기간*</div>
                             <div class="row">
                                 <div>
-                                    <q-input v-model="form.StartDate" type="date" filled dense style="width: 200px;" class="faSB"
-                                    :error="formError.StartDate?true:false" :error-message="formError.StartDate" /> 
+                                    <q-input v-model="form.start_date" type="date" filled dense style="width: 200px;" class="faSB"
+                                    :error="formError.start_date?true:false" :error-message="formError.start_date" /> 
                                 </div>
                                 <div class="faSB text-body1">
                                     &nbsp;~&nbsp;
                                 </div>
                                 <div>
-                                    <q-input v-model="form.EndDate" type="date" filled dense style="width: 200px;" class="faSB"
-                                    :error="formError.EndDate?true:false" :error-message="formError.EndDate" />
+                                    <q-input v-model="form.end_date" type="date" filled dense style="width: 200px;" class="faSB"
+                                    :error="formError.end_date?true:false" :error-message="formError.end_date" />
                                 </div>
                             </div>
                             <div class="text-h6 faSB">설명</div>
-                            <q-editor v-model="form.Body" min-height="100" placeholder="설명을 입력해주세요."
-                                :error="formError.Body?true:false" :error-message="formError.Body" />
+                            <q-editor v-model="form.body" min-height="100" placeholder="설명을 입력해주세요."
+                                :error="formError.body?true:false" :error-message="formError.body" />
                         </q-scroll-area>
 
                     </div>
@@ -91,10 +91,10 @@
 import axios from "axios";
 
 export default {
-    name: 'dialog_objective_modify_form',
+    name: 'dialog_objective',
     computed: {
-        appUsers() {
-            return this.$store.state.appUsers;
+        company_members() {
+            return this.$store.state.company_members;
         },
     },
     data() {
@@ -102,77 +102,60 @@ export default {
             mode: 'add',
             isOpen: false,
 
-            OKRId: 0,
+            okr_id: 0,
             form: {
-                Title: '',
-                Body: '',
-                Status: 0,
-                StartDate: '',
-                EndDate: '',
+                title: '',
+                body: '',
+                status: 0,
+                start_date: '',
+                end_date: '',
             },
+            formError: {},
+
             managers: [],
-            formError: {
-                Title: '',
-                managers: '',
-                Body: '',
-                Status: '',
-                StartDate: '',
-                EndDate: '',
-            }
         }
     },
     methods: {
-        clearError() {
-            this.formError.Title = "";
-            this.formError.managers = "";
-            this.formError.Body = "";
-            this.formError.StartDate = "";
-            this.formError.EndDate = "";
-        },
-        setError(err) {
-            this.formError.Title = err?.Title;
-            this.formError.managers = err?.managers;
-            this.formError.Body = err?.Body;
-            this.formError.StartDate = err?.StartDate;
-            this.formError.EndDate = err?.EndDate;
-        },
-        open(mode, OKRId, callback) {
+        open(obj, callback) {
             let vm = this;
-            if(mode == 'add') {
-                vm.mode = mode;
+            if(obj.mode == 'add') {
+                vm.mode = obj.mode;
             }
             if(callback) { vm.callback = callback; }
-            vm.OKRId = OKRId;
+            vm.okr_id = obj.okr_id;
             vm.isOpen = true;
         },
 
         onSave() {
             let vm = this;
-            vm.clearError();
+            window.$c.form.clearError(vm.formError);
             let objective = {
-                Title: vm.form.Title,
-                Body: vm.form.Body,
-                OKRId: vm.OKRId,
-                Status: vm.form.Status,
-                StartDate: vm.form.StartDate,
-                EndDate: vm.form.EndDate,
-                WriterUID: vm.$store.state.UID,
+                title: vm.form.title,
+                body: vm.form.body,
+                okr_id: vm.okr_id,
+                status: vm.form.status,
+                start_date: vm.form.start_date,
+                end_date: vm.form.end_date,
+                writer_uid: vm.$store.state.account.uid,
             }
             vm.$q.loading.show();
             axios.post(`/api/objective`, {
-                Objective: objective,
-                Managers: vm.managers,
+                objective: objective,
+                objective_managers: vm.managers,
             }).then((res) => {
-                let data = res.data;
-                if(vm.callback) { vm.callback(); }
-                vm.isOpen = false;
-                vm.$c.response_notify("check", "positive", data.message);
-                vm.$q.loading.hide();
-            }).catch((err) => {
-                if(err?.response?.status === 403) {
-                    vm.setError(err.response.data.error);
+                let response = res.data;
+                if(response.status === 200) {
+                    window.$c.response_notify("check", "positive", response.message);
+                    if(vm.callback) { vm.callback(); }
+                    vm.isOpen = false;
                 }
                 vm.$q.loading.hide();
+            }).catch((err) => {
+                vm.$q.loading.hide();
+                if(err?.response?.status === 400) {
+                    let errors = err.response?.data?.data?.errors;
+                    window.$c.form.setError(vm.formError, errors);
+                }
             });
         }
     },

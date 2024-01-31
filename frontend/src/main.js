@@ -9,7 +9,6 @@ import 'quasar/dist/quasar.css'
 import '@/assets/css/common.css'
 
 
-
 import { createI18n } from 'vue-i18n'
 import messages from '../lang/index'
 
@@ -22,7 +21,7 @@ const i18n = createI18n({
     messages,
 });
 
-const app = createApp(App);
+export const app = createApp(App);
 
 window.$c = $c;
 // app.config.globalProperties.$c = $c;
@@ -48,4 +47,8 @@ app.use(Quasar, {
     },
 });
 app.use(router);
+
+import header_dialog from "@/components/header.dialog.vue"
+app.component("header-dialog", header_dialog);
+
 app.mount('#app');

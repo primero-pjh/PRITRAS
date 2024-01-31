@@ -15,8 +15,9 @@
             rounded @click="onAddObjective" />
         <div class="q-mt-md">
             <template v-if="objectives.length == 0">
-                <div class="faSB ft24 shadow-2 q-pa-md text-center">
-                    OKR에 설정된 목표가 없습니다.
+                <div class="faSB q-pa-md text-center">
+                    <div class="text-h6">OKR에 설정된 목표가 없습니다. 😓<br/></div>
+                    <div class="text-body1 text-negative">OKR의 새 목표를 지정해주세요 !</div>
                 </div>
             </template>
             <template v-else>
@@ -48,7 +49,7 @@
                     </q-btn-group>
                 </div>
                 <template v-if="viewType==='list'">
-                    <listView :objectives="objectives" ref="listView" />
+                    <listView :objectives="objectives" @loadData="loadData" ref="listView" />
                 </template>
                 <template v-else-if="viewType==='tree'">
                     <treeView :dataset="dataset" :treeConfig="treeConfig" ref="treeView" />
@@ -111,8 +112,11 @@ export default {
         },
         onAddObjective() {
             let vm = this;
-            vm.$root.$refs.dialog_objective_modify_form.open('add', vm.okr.okr_id, () => {
-                vm.loadData(vm.work_space_id);
+            vm.$root.$refs.dialog_objective.open({
+                mode: 'add',
+                okr_id: vm.okr.okr_id,
+            }, () => {
+                vm.loadData(vm.work_space_id, vm.okr.okr_id);
             });
         },
         loadData(work_space_id, okr_id) {
@@ -139,7 +143,6 @@ export default {
                 let response3 = res3.data;
                 if(response3.status === 200) {
                     let objectives = response3.data;
-                    console.log("objectives:", objectives);
                     objectives.map((x) => {
                         x["start_date_view"] = window.$c.formatDate(x.start_date, "YYYY-MM-DD");
                         x["end_date_view"] = window.$c.formatDate(x.end_date, "YYYY-MM-DD");

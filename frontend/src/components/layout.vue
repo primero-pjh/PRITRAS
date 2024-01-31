@@ -70,7 +70,16 @@
                             <template v-for="ws, ws_i in work_spaces" :key="ws_i">
                                 <q-item clickable v-ripple @click="goto_workSpace(ws.work_space_id)">
                                     <q-item-section class="faSB ft16">
-                                        <q-item-label>{{ ws.work_space_name }}</q-item-label>
+                                        <q-item-label>
+                                            <div style="text-overflow: ellipsis; overflow: hidden;
+                                                max-width: 150px;
+                                                white-space: nowrap;">
+                                                {{ ws.work_space_name }}
+                                            </div>
+                                            <q-tooltip class="faSB">
+                                                {{ ws.work_space_name }}
+                                            </q-tooltip>
+                                        </q-item-label>
                                     </q-item-section>
                                     <q-item-section side v-if="$route.params?.work_space_id == ws.work_space_id">
                                         <q-icon name="check" color="positive" />
