@@ -10,5 +10,6 @@ router.use('/', require('./work-space.router'))
 router.use('/', require('./okr.router'))
 router.use('/', require('./objective.router'))
 router.use('/', require('./key-result.router'))
+router.use('/', require('./schedule.router'))
 
 module.exports = router;

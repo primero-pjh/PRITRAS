@@ -35,7 +35,10 @@
             </div>
             <q-space />
             <div>
-                <q-btn icon="filter_alt" color="black" dense outline><q-tooltip>캘린더 필터</q-tooltip></q-btn>
+                <q-btn icon="filter_alt" color="black" dense 
+                    @click="onWindowCalendar"
+                    outline><q-tooltip>캘린더 필터</q-tooltip>
+                </q-btn>
             </div>
         </div>
         <!-- <q-separator></q-separator> -->
@@ -43,20 +46,30 @@
         <div class="bg-white">
             <div id="calendar" style="height: 600px; border: 1px solid #eee;"></div>
         </div>
+
+        <!-- <com_calendar_filter ref="com_calendar_filter" /> -->
+        <!-- <com_winbox ref="com_winbox" /> -->
+        <template v-if="!isDisabled">
+            <div>안녕?</div>
+            <teleport to="#calendar_filter .wb-body">
+                <com_calendar_filter ref="com_calendar_filter" />
+            </teleport>
+        </template>
     </div>
-    <com_calendar_filter ref="com_calendar_filter"></com_calendar_filter>
 </template>
 
 <script>
 
 import axios from "axios";
 import Calendar from '@toast-ui/calendar';
-import com_calendar_filter from '@/components/calendar/filter.com';
+import com_calendar_filter from '@/components/calendar/com_calendar_filter';
+// import com_winbox from '@/components/com_winbox';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 export default {
     name: 'calendarVue',
     components: {
-        com_calendar_filter
+        com_calendar_filter,
+        // com_winbox
     },
     computed: {
     },
@@ -79,6 +92,8 @@ export default {
             formError: {
                 title: '',
             },
+
+            isDisabled: true,
         }
     },
     methods: {
@@ -168,21 +183,27 @@ export default {
         /* load */
         loadScheduleList() {
             let vm = this;
-            vm.$q.loading.show();
-            let coupleInfoId = vm.$store.state.user.coupleInfoId;
-            axios.get(`/api/couple/${coupleInfoId}/schedules`, {}).then((res) => {
-                let data = res.data;
-                if(data.success) {
-                    let row = data.sche_list;
+            // vm.$q.loading.show();
+
+            let uid = vm.$store.state.account.uid
+            axios.get(`/api/schedule/user/${uid}`, {
+
+            }).then((res) => {
+                let response = res.data;
+                if(response.status === 200) {
+                    let row = response.data;
+                    console.log(row);
                     row.map((x) => {
-                        x.isAllday = x.isAllday ? true : false;
+                        x.isAllday = x.is_allday ? true : false;
                         x.attendees = JSON.parse(x.attendees);
-                        x["backgroundColor"] = vm.classification_dict[x.classification]?.color;
-                        x["dragBackgroundColor"] = vm.classification_dict[x.classification]?.color;
+                        // x["backgroundColor"] = vm.classification_dict[x.classification]?.color;
+                        // x["dragBackgroundColor"] = vm.classification_dict[x.classification]?.color;
                     });
                     vm.calendar.createEvents(row);
                     vm.schedule_list = row;
                 }
+                vm.$q.loading.hide();
+            }).catch((err) => {
                 vm.$q.loading.hide();
             });
             vm.calendar.render();
@@ -206,10 +227,32 @@ export default {
                 }
             });
         },
+
+        onWindowCalendar() {
+            let vm = this;
+            let winbox = window.$winbox.create({
+                id: 'calendar_filter',
+                title: '캘린더 필터',
+                html: '',
+
+                oncreate: function() {
+                    console.log("oncreate");
+                    vm.isDisabled = false;
+                    console.log("isDisabled:", vm.isDisabled);
+                },
+                onclose: function() {
+                    console.log("onclose");
+                    vm.isDisabled = true;
+                    console.log("isDisabled:", vm.isDisabled);
+                },
+            });
+
+            // vm.$nextTick(() => {
+            //     vm.isDisabled = true;
+            //     console.log("isDisabled:", vm.isDisabled);
+            // });
+        },
     },
-    created() {
-        let vm = this;
-    },  
     mounted: function() {
         let vm = this;
         let date = new Date();
@@ -250,7 +293,13 @@ export default {
                 // customStyle:	{},	            // 일정 요소에 적용할 스타일. CSS 카멜케이스 프로퍼티를 가진 자바스크립트 객체이다.
                 // raw:	null,	                // 실제 일정 데이터
             };
-            vm.$root.$refs.dialog_scheduled.open('add', schedule, (scheduleData) => {
+
+            console.log("info:", info);
+            vm.$root.$refs.dialog_schedule.open({
+                mode: 'add',
+                schedule: schedule,
+            }, (scheduleData) => {
+                console.log("scheduleData:", scheduleData);
                 if(scheduleData) {
                     vm.schedule_list.push(scheduleData);
                     vm.calendar.createEvents([scheduleData]);  // 한개 이상의 캘린더 이벤트를 생성한다.
@@ -334,17 +383,8 @@ export default {
         //     console.log(event.date, event.target);
         // });
         vm.calendar = calendar;
-        if(Object.prototype.hasOwnProperty.call(vm.$router.currentRoute.value.params, "id")) {
-            let id = vm.$router.currentRoute.value.params.id;
-            if(id == 0) {
-                vm.loadScheduleList();
-            } else {
-                vm.loadScheduleList();
-                vm.loadSchedule(id);
-            }
-        }
 
-        console.log("com_calendar_filter:", vm.$refs.com_calendar_filter);
+        vm.loadScheduleList();
     },
 }
 </script>

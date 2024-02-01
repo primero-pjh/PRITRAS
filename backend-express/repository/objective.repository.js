@@ -1,6 +1,4 @@
-const appRoot = require('app-root-path');
-const path = appRoot.path;
-const DB = require(`${path}/db/pritras.db`);
+const DB = require('../db/pritras.db');
 
 class ObjectiveRepository {
 	selectAllOfOKRId = async (okr_id) => {

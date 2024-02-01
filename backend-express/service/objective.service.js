@@ -1,8 +1,6 @@
-const appRoot = require('app-root-path');
-const path = appRoot.path;
-const ObjectiveRepository = require(`../repository/objective.repository`);
-const ObjectiveManagerRepository = require(`../repository/objective.manager.repository`);
-const KeyresultRepo = require(`../repository/key-result.repository`);
+const ObjectiveRepository = require('../repository/objective.repository');
+const ObjectiveManagerRepository = require('../repository/objective.manager.repository');
+const KeyresultRepo = require('../repository/key-result.repository');
 
 class ObjectiveService {
 	constructor() {

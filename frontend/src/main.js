@@ -26,6 +26,9 @@ const i18n = createI18n({
 export const app = createApp(App);
 
 window.$c = $c;
+
+import { $winbox } from "./utils/winbox.util"
+window.$winbox = $winbox;
 // app.config.globalProperties.$c = $c;
 app.config.globalProperties.$store = store;
 app.config.globalProperties.$config = config;

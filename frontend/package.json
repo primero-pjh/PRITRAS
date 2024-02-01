@@ -29,9 +29,7 @@
     "vue-i18n": "^9.8.0",
     "vue-plugin-load-script": "^2.1.1",
     "vue-router": "^4.0.13",
-    "vue-winbox": "^0.2.3",
-    "vuex": "^4.1.0",
-    "winbox": "^0.2.82"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

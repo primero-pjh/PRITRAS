@@ -7,6 +7,7 @@
         </layout>
         <dialog_objective ref="dialog_objective" />
         <dialog_okr ref="dialog_okr" />
+        <dialog_schedule ref="dialog_schedule"></dialog_schedule>
     </div>
 </template>
 
@@ -14,6 +15,7 @@
 import layout from "@/components/layout.vue";
 import dialog_objective from "@/components/objective/dialog.objective.vue";
 import dialog_okr from "@/components/okr/dialog.okr.vue";
+import dialog_schedule from "@/components/dialog_schedule.vue";
 
 export default {
     name: 'App',
@@ -23,6 +25,7 @@ export default {
         layout,
         dialog_objective,
         dialog_okr,
+        dialog_schedule,
     },
     data() {
         return {
