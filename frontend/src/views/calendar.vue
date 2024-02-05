@@ -183,7 +183,7 @@ export default {
         /* load */
         loadScheduleList() {
             let vm = this;
-            // vm.$q.loading.show();
+            vm.$q.loading.show();
 
             let uid = vm.$store.state.account.uid
             axios.get(`/api/schedule/user/${uid}`, {
@@ -192,15 +192,34 @@ export default {
                 let response = res.data;
                 if(response.status === 200) {
                     let row = response.data;
-                    console.log(row);
+
+                    vm.schedule_list = [];
                     row.map((x) => {
-                        x.isAllday = x.is_allday ? true : false;
-                        x.attendees = JSON.parse(x.attendees);
-                        // x["backgroundColor"] = vm.classification_dict[x.classification]?.color;
-                        // x["dragBackgroundColor"] = vm.classification_dict[x.classification]?.color;
+                        let schedule = {};
+                        schedule["id"] = x.id;
+                        schedule["uid"] = x.uid;
+                        schedule["calendarId"] = x.calendar_id;
+                        schedule["title"] = x.title;
+                        schedule["body"] = x.body;
+                        schedule["isAllday"] = (x.is_allday) ? true : false;
+                        schedule["start"] = x.start;
+                        schedule["end"] = x.end;
+                        schedule["location"] = x.location;
+                        schedule["attendees"] = JSON.parse(x.attendees);
+                        schedule["category"] = x.category;
+                        schedule["classification"] = x.classification;
+                        schedule["dueDateClass"] = x.due_date_class;
+                        schedule["isVisible"] = x.is_visible;
+                        schedule["isPending"] = x.is_pending;
+                        schedule["isFocused"] = x.is_focused;
+                        schedule["isPrivate"] = x.is_private;
+                        schedule["status"] = x.status;
+                        schedule["dateAdded"] = x.date_added;
+                        schedule["dateDeleted"] = x.date_deleted;
+                        vm.schedule_list.push(schedule);
                     });
-                    vm.calendar.createEvents(row);
-                    vm.schedule_list = row;
+
+                    vm.calendar.createEvents(vm.schedule_list);
                 }
                 vm.$q.loading.hide();
             }).catch((err) => {
@@ -208,24 +227,6 @@ export default {
             });
             vm.calendar.render();
             vm.calendar.clearGridSelections();
-        },
-        loadSchedule(id) {
-            let vm = this;
-            let coupleInfoId = vm.$store.state.user.coupleInfoId;
-            axios(`/api/couple/${coupleInfoId}/schedules/${id}`, {}).then((res) => {
-                let data = res.data;
-                if(data.success) {
-                    let schedule = data.schedule;
-                    schedule.isAllday = schedule.isAllday ? true : false;
-                    vm.$root.$refs.dialog_scheduled.open('edit', schedule, (schedule, type) => {
-                        if(type == 'edit') {
-                            vm.calendar.updateEvent(schedule.id, schedule.calendarId, schedule);
-                        } else if (type == 'delete') {
-                            vm.calendar.deleteEvent(schedule.id, schedule.calendarId);
-                        }
-                    });
-                }
-            });
         },
 
         onWindowCalendar() {
@@ -246,17 +247,12 @@ export default {
                     console.log("isDisabled:", vm.isDisabled);
                 },
             });
-
-            // vm.$nextTick(() => {
-            //     vm.isDisabled = true;
-            //     console.log("isDisabled:", vm.isDisabled);
-            // });
         },
     },
     mounted: function() {
         let vm = this;
         let date = new Date();
-        vm.standard_date = `${date.getFullYear()}-${(date.getMonth()+1)>=10?(date.getMonth()+1):'0'+(date.getMonth()+1)}`;
+        vm.standard_date = window.$c.formatDate(new Date(), "YYYY-MM");
         const calendar = new Calendar('#calendar', {
             defaultView: 'month',
             isReadOnly: false,
@@ -313,7 +309,9 @@ export default {
         calendar.on('beforeUpdateEvent', ( { event, changes }) => {
             // vm.$q.loading.show();
             const { id, calendarId } = event;
-            let end = vm.$c.formatDate(changes.end);
+            // console.log(event, changes);
+            console.log("changes.end:", changes.end);
+            let end = window.$c.formatDate(changes.end, "YYYY-MM-DD HH:mm:ss");
             let schedule = vm.$c.tempObj(event);
             let scheduleId = event.id;
             schedule["classification"] = vm.classification_id_dict[event.calendarId].title;
@@ -328,9 +326,7 @@ export default {
                 schedule.end = end;
             }
             axios.put(`/api/schedules/${scheduleId}`, {
-                params: {
-                    schedule,
-                }
+                schedule,
             }).then((res) => {
                 let data = res.data;
                 if(data.success) {
@@ -359,13 +355,17 @@ export default {
         // 이벤트를 클릭할 때 발생
         calendar.on('clickEvent', ({ event }) => {
             const { id, calendarId } = event;
-            console.log("event:", event);
+            console.log("clickEvent:", event);
             let temp = vm.schedule_list.find(x=>x.id == id);
             if(temp && temp.classification) {
                 event["classification"] = temp.classification;
             }
             event["prevCalendarId"] = event.calendarId;
-            vm.$root.$refs.dialog_scheduled.open('edit', event, (schedule, type) => {
+
+            vm.$root.$refs.dialog_schedule.open({
+                mode: 'edit',
+                schedule: event,
+            }, (schedule, type) => {
                 if(schedule && schedule.classification) {
                     schedule["backgroundColor"] = vm.classification_dict[schedule.classification].color;
                     schedule["dragBackgroundColor"] = vm.classification_dict[schedule.classification].color;

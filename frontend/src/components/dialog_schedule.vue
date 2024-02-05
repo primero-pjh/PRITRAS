@@ -328,7 +328,6 @@ export default {
             vm.$q.loading.show();
             window.$c.form.clearError(vm.formError);
             vm.schedule["uid"] = vm.$store.state.account.uid;
-            // console.log("schedule:", vm.schedule);
             axios.post(`/api/schedule`, {
                 schedule: vm.schedule,
             }).then((res) => {
@@ -352,42 +351,25 @@ export default {
             let vm = this;
             vm.$q.loading.show();
             vm.$store.state.clearError(vm.formError);
-            let scheduleId = vm.schedule.id;
-            axios.put(`/api/schedules/${scheduleId}`, {
-                params: {
-                    schedule: vm.schedule,
-                }
+
+            vm.schedule["uid"] = vm.$store.state.account.uid;
+            axios.put(`/api/schedule`, {
+                schedule: vm.schedule,
             }).then((res) => {
-                let data = res.data;
-                if(data.success) {
-                    vm.$q.notify({
-                        icon: 'check',
-                        message: data.message,
-                        color: 'positive',
-                    });
+                let response = res.data;
+                if(response.status === 200) {
+                    window.$c.response_notify("check", "positive", response.message);
                     vm.callback(vm.schedule, 'edit');
                     vm.isOpen = false;
-                } else {
-                    if(Object.prototype.hasOwnProperty.call(data, "error") == true) {
-                        vm.$store.state.setError(vm.formError, data.error);
-                    }
-                    if(Object.prototype.hasOwnProperty.call(data, "message") == true) {
-                        vm.$q.notify({
-                            icon: 'error',
-                            color: 'negative',
-                            message: data.message,
-                        });
-                        alert(data.message);
-                    }
-                }
+                } 
                 vm.$q.loading.hide();
             }).catch((err) => {
-                vm.$q.notify({
-                    icon: 'error',
-                    color: 'negative',
-                    message: vm.$store.state.catchErrorMessage,
-                });
                 vm.$q.loading.hide();
+                if(err?.response?.status === 400) {
+                    let errors = err.response?.data?.data?.errors;
+                    console.log("errors:", errors);
+                    window.$c.form.setError(vm.formError, errors);
+                }
             });
         },
         onDelete() {

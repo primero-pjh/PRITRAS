@@ -14,6 +14,11 @@ class ScheduleService {
 		let schedule_id = await this.scheduleRepository.insertSchedule(schedule);
 		return schedule_id;
 	}
+
+	modifySchedule = async (schedule) => {
+		let schedule_id = await this.scheduleRepository.updateSchedule(schedule);
+		return schedule_id;
+	}
 }
 
 module.exports = ScheduleService;

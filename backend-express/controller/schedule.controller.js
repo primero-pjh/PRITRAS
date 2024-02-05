@@ -12,10 +12,19 @@ ScheduleController.getSchedules = async (req, res) => {
 }
 
 ScheduleController.scheduleAdd = async (req, res) => {
-	console.log("schedule:", req.body);
 	try {
 		let schedule_id = await scheduleService.addSchedule(req.body.schedule);
 		return res.status(OK).json(http.response(schedule_id, OK, '성공적으로 생성하였습니다.'));
+	} catch (err) {
+		console.log("err:", err);
+		return http.errorResponse(res, INTERNAL_SERVER_ERROR, "", err);
+	}
+}
+
+ScheduleController.scheduleModify = async (req, res) => {
+	try {
+		let schedule_id = await scheduleService.modifySchedule(req.body.schedule);
+		return res.status(OK).json(http.response(schedule_id, OK, '성공적으로 수정하였습니다.'));
 	} catch (err) {
 		console.log("err:", err);
 		return http.errorResponse(res, INTERNAL_SERVER_ERROR, "", err);
